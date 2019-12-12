@@ -42,6 +42,7 @@ import sys
 import os
 import shutil
 import re
+import logging
 
 
 CONFIG_COPY_TYPE = 'TYPE'
@@ -564,6 +565,8 @@ class SrcFileCopier(FileCopier):
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+
     if len(sys.argv) >= 2:
         MainClass().main(sys.argv[1])
     else:
