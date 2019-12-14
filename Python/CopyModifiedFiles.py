@@ -117,8 +117,6 @@ class FileCopier():
 
         # 将文件内容分割存到数组中，不添加空行，
         # 并替换反斜杠为斜杠、去除多余斜杠、去除每行的无效空格
-        # fileLines = [line.replace('\\', '/').strip()
-        #     for line in fileContent.splitlines()]
         for line in fileContent.splitlines():
             formattedLine = line.replace('\\', '/').strip()
 
@@ -150,7 +148,7 @@ class FileCopier():
         copyType = DEF_COPY_TYPE
 
         for line in fileLines:
-            if re.match(CONFIG_COPY_TYPE + ' *:.*', line.upper()):
+            if re.match(CONFIG_COPY_TYPE + r' *:.*', line.upper()):
                 copyType = line[line.find(':') + 1:].strip().upper()
 
                 try:
@@ -170,7 +168,7 @@ class FileCopier():
         fromDir = ''
 
         for line in fileLines:
-            if re.match(CONFIG_FROM + ' *:.*', line.upper()):
+            if re.match(CONFIG_FROM + r' *:.*', line.upper()):
                 fromDir = line[line.find(':') + 1:].strip()
 
                 try:
@@ -196,7 +194,7 @@ class FileCopier():
         toDir = 'destination'
 
         for line in fileLines:
-            if re.match(CONFIG_TO + ' *:.*', line.upper()):
+            if re.match(CONFIG_TO + r' *:.*', line.upper()):
                 toDir = line[line.find(':') + 1:].strip()
 
                 try:
@@ -219,7 +217,7 @@ class FileCopier():
         prefix = ''
 
         for line in fileLines:
-            if re.match(CONFIG_PREFIX + ' *:.*', line.upper()):
+            if re.match(CONFIG_PREFIX + r' *:.*', line.upper()):
                 prefix = line[line.find(':') + 1:].strip().upper()
 
                 try:
@@ -244,7 +242,7 @@ class FileCopier():
         webPrefixPattern = ''
 
         for line in fileLines:
-            if re.match(CONFIG_WEB + ' *:.*', line.upper()):
+            if re.match(CONFIG_WEB + r' *:.*', line.upper()):
                 webPrefix = line[line.find(':') + 1:].strip().upper()
 
                 try:
@@ -253,9 +251,6 @@ class FileCopier():
                     print(e)
 
                 break
-
-        # # 删除首尾多余或重复的/，再加上/
-        # webPrefix = re.sub(r'(^/+|/+$)', '', webPrefix) + '/'
 
         # 将前缀分割重组，组成正则表达式项
         for item in webPrefix.upper().split('|'):
@@ -277,7 +272,7 @@ class FileCopier():
         resourcesPrefixPattern = ''
 
         for line in fileLines:
-            if re.match(CONFIG_RES + ' *:.*', line.upper()):
+            if re.match(CONFIG_RES + r' *:.*', line.upper()):
                 resourcesPrefix = line[line.find(':') + 1:].strip().upper()
 
                 try:
@@ -287,13 +282,10 @@ class FileCopier():
 
                 break
 
-        # 删除首尾多余或重复的/，再加上/
-        # resourcesPrefix = re.sub(r'(^/+|/+$)', '', resourcesPrefix) + '/'
-
         # 将前缀分割重组，组成正则表达式项
         for item in resourcesPrefix.upper().split('|'):
-            resourcesPrefixItems.append('^' + re.sub(r'(^/+|/+$)', '', item.strip())
-                + '/')
+            resourcesPrefixItems.append('^'
+                + re.sub(r'(^/+|/+$)', '', item.strip()) + '/')
 
         # 组成最终的正则表达式
         resourcesPrefixPattern = '(' + '|'.join(resourcesPrefixItems) + ')'
@@ -310,7 +302,7 @@ class FileCopier():
         srcPrefixPattern = ''
 
         for line in fileLines:
-            if re.match(CONFIG_SRC + ' *:.*', line.upper()):
+            if re.match(CONFIG_SRC + r' *:.*', line.upper()):
                 srcPrefix = line[line.find(':') + 1:].strip().upper()
 
                 try:
@@ -319,9 +311,6 @@ class FileCopier():
                     print(e)
 
                 break
-
-        # 删除首尾多余或重复的/，再加上/
-        # srcPrefix = re.sub(r'(^/+|/+$)', '', srcPrefix) + '/'
 
         # 将前缀分割重组，组成正则表达式项
         for item in srcPrefix.upper().split('|'):
@@ -378,8 +367,8 @@ class DistFileCopier(FileCopier):
             if line.upper().startswith(prefix):
                 line = line[len(prefix):]
 
-            # 去掉头部的/
-            line = re.sub(r'^/', '', line)
+            # 去掉头部多余的/
+            line = re.sub(r'^/+', '', line)
 
             if re.match(webPrefix, line.upper()):
                 webFiles.append(line[line.find('/') + 1:])
@@ -399,8 +388,8 @@ class DistFileCopier(FileCopier):
             if line.upper().startswith(prefix):
                 line = line[len(prefix):]
 
-            # 去掉头部的/
-            line = re.sub(r'^/', '', line)
+            # 去掉头部多余的/
+            line = re.sub(r'^/+', '', line)
 
             if re.match(resourcesPrefix, line.upper()):
                 resourcesFiles.append(line[line.find('/') + 1:])
@@ -421,8 +410,8 @@ class DistFileCopier(FileCopier):
             if line.upper().startswith(prefix):
                 line = line[len(prefix):]
 
-            # 去掉头部的/
-            line = re.sub(r'^/', '', line)
+            # 去掉头部多余的/
+            line = re.sub(r'^/+', '', line)
 
             # 如果行内容不是web前缀也不是resources前缀则认为是class文件
             if not re.match(webPrefix, line.upper()) \
@@ -523,7 +512,9 @@ class SrcFileCopier(FileCopier):
             if line.upper().startswith(prefix):
                 line = line[len(prefix):]
 
-            srcFiles.append(re.sub(r'^/+', '', line))
+            # 去掉头部多余的/
+            line = re.sub(r'^/+', '', line)
+            srcFiles.append(line)
 
         return srcFiles
         pass
