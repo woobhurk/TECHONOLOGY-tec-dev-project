@@ -16,7 +16,7 @@ public class JavaScriptUtils {
     private static Map<String, ScriptEngine> engineMap = new HashMap<>();
 
     static {
-        LOGGER.info("---- Initialize JavaScript engines...");
+        LOGGER.fine("---- Initialize JavaScript engines...");
 
         ScriptEngineManager engineManager = new ScriptEngineManager();
         ScriptEngineFactory engineFactory = new NashornScriptEngineFactory();
@@ -31,7 +31,7 @@ public class JavaScriptUtils {
 
         engine = engineMap.get(engineFactory.getNames().get(0));
 
-        LOGGER.info("---- Initialization finished.");
+        LOGGER.fine("---- Initialization finished.");
     }
 
     private JavaScriptUtils() {}

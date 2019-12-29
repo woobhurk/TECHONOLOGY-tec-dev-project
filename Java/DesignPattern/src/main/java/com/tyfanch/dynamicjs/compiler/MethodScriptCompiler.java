@@ -32,22 +32,6 @@ public class MethodScriptCompiler implements ScriptCompiler {
         return compiledString;
     }
 
-    ///**
-    // * 编译所有参数
-    // * @param script 要编译的脚本
-    // * @param args 传入的参数
-    // * @return 编译后的脚本
-    // */
-    //private String compileParams(String script, Object... args) {
-    //    Map<String, Object> paramMap;
-    //    String compiledString;
-    //
-    //    paramMap = this.buildParamMap(args);
-    //    compiledString = this.compileByParamMap(script, paramMap);
-    //
-    //    return compiledString;
-    //}
-
     /**
      * 建立注解中参数名和参数值的映射关系，生成Map
      * @param args 传入的参数

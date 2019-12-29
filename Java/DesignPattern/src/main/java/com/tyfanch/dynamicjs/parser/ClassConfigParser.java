@@ -63,14 +63,9 @@ public class ClassConfigParser implements ConfigParser {
         String value = scriptRunner.value().trim();
         String engine = scriptRunner.engine().trim();
 
-        // 如果引擎名称都为空则抛出异常
         if (value.isEmpty() && engine.isEmpty()) {
+            // 如果引擎名称使用默认的引擎
             scriptConfig.setEngine(DefaultScriptConfig.DEFAULT_ENGINE);
-            //String errorMsg = String.format(
-            //    "Invalid engine name: %s and %s",
-            //    value, engine);
-            //
-            //throw new RuntimeException(errorMsg);
         } else {
             // 取非空的值
             scriptConfig.setEngine(value.isEmpty() ? engine : value);
@@ -127,6 +122,8 @@ public class ClassConfigParser implements ConfigParser {
         String value = scriptMethod.value().trim();
         String engine = scriptMethod.engine().trim();
         String script = scriptMethod.script();
+        String[] scripts = scriptMethod.scripts();
+        StringBuilder scriptSb = new StringBuilder(script + "\n");
 
         if (value.isEmpty() && engine.isEmpty()) {
             // 都为空则继承Script配置中的引擎
@@ -136,8 +133,12 @@ public class ClassConfigParser implements ConfigParser {
             methodConfig.setEngine(value.isEmpty() ? engine : value);
         }
 
+        for (String line : scripts) {
+            scriptSb.append(line).append("\n");
+        }
+
         // 设置脚本内容
-        methodConfig.setScript(script);
+        methodConfig.setScript(scriptSb.toString());
 
         return methodConfig;
     }

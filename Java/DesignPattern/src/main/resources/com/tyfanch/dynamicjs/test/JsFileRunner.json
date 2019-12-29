@@ -8,7 +8,12 @@
         },
         "evalPlus": {
             "engine": "ECMAScript",
-            "script": "%1$d + %2$d * 100;"
+            "script": "%1$d + %2$d * 100;",
+            "scripts": [
+                "for (var i = 0; i < 10; i++) {",
+                "    print('%2$d: ' + i)",
+                "}"
+            ]
         },
         "evalPow": {
             "script": "Math.pow(%1$d, %2$d);"

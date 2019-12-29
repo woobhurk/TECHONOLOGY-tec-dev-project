@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Map;
+import com.tyfanch.dynamicjs.config.DefaultScriptConfig;
 import com.tyfanch.dynamicjs.config.ScriptConfigFactory;
 import com.tyfanch.dynamicjs.model.MethodConfig;
 import com.tyfanch.dynamicjs.model.ScriptConfig;
@@ -14,6 +15,7 @@ import com.tyfanch.dynamicjs.utils.JsonUtils;
  */
 public class NamespaceConfigParser implements ConfigParser {
     private String namespace;
+    private ScriptConfig scriptConfig;
 
     /**
      * 命名空间，必须指定
@@ -35,13 +37,15 @@ public class NamespaceConfigParser implements ConfigParser {
     public ScriptConfig parseScriptConfig() {
         InputStream configFileInputStream;
         String configFileContent;
-        ScriptConfig scriptConfig;
+        Map<String, MethodConfig> methodConfigMap;
 
         configFileInputStream = this.getConfigFileInputStream();
         configFileContent = this.getConfigFileContent(configFileInputStream);
-        scriptConfig = this.getScriptConfigByStream(configFileContent);
+        this.scriptConfig = this.parseBaseScriptConfig(configFileContent);
+        methodConfigMap = this.parseMethodConfigMap();
+        this.scriptConfig.setMethods(methodConfigMap);
 
-        return scriptConfig;
+        return this.scriptConfig;
     }
 
     /**
@@ -91,7 +95,7 @@ public class NamespaceConfigParser implements ConfigParser {
      * @param configFileContent 文件内容
      * @return Script配置
      */
-    private ScriptConfig getScriptConfigByStream(String configFileContent) {
+    private ScriptConfig parseBaseScriptConfig(String configFileContent) {
         ScriptConfig scriptConfig;
 
         scriptConfig = JsonUtils.fromJson(configFileContent, ScriptConfig.class);
@@ -111,16 +115,46 @@ public class NamespaceConfigParser implements ConfigParser {
             scriptConfig.setNamespace(this.namespace);
         }
 
-        // 将未设置引擎的方法自动设置引擎为Script配置的引擎
-        for (Map.Entry<String, MethodConfig> entry : scriptConfig.getMethods().entrySet()) {
-            MethodConfig methodConfig = entry.getValue();
-
-            if (methodConfig.getEngine() == null
-                || methodConfig.getEngine().trim().isEmpty()) {
-                methodConfig.setEngine(scriptConfig.getEngine());
-            }
+        // 设置默认引擎
+        if (scriptConfig.getEngine() == null
+            || scriptConfig.getEngine().trim().isEmpty()) {
+            scriptConfig.setEngine(DefaultScriptConfig.DEFAULT_ENGINE);
         }
 
         return scriptConfig;
+    }
+
+    /**
+     * 解析方法，做一些预处理
+     * @return 方法Map
+     */
+    private Map<String, MethodConfig> parseMethodConfigMap() {
+        Map<String, MethodConfig> methodConfigMap = this.scriptConfig.getMethods();
+        StringBuilder scriptSb;
+
+        for (Map.Entry<String, MethodConfig> entry : methodConfigMap.entrySet()) {
+            MethodConfig methodConfig = entry.getValue();
+            String script = methodConfig.getScript();
+            String[] scripts = methodConfig.getScripts();
+
+            // 将未设置引擎的方法自动设置引擎为Script配置的引擎
+            if (methodConfig.getEngine() == null
+                || methodConfig.getEngine().trim().isEmpty()) {
+                methodConfig.setEngine(this.scriptConfig.getEngine());
+            }
+
+            // 把多行的脚本合并到一起
+            scriptSb = new StringBuilder(script + "\n");
+
+            if (scripts != null) {
+                for (String line : scripts) {
+                    scriptSb.append(line).append("\n");
+                }
+            }
+
+            methodConfig.setScript(scriptSb.toString());
+        }
+
+        return methodConfigMap;
     }
 }

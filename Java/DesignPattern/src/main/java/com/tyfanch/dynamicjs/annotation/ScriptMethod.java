@@ -29,5 +29,11 @@ public @interface ScriptMethod {
      * 脚本
      * @return 脚本
      */
-    String script();
+    String script() default "";
+
+    /**
+     * 多行脚本
+     * @return 多行脚本
+     */
+    String[] scripts() default {};
 }
