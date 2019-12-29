@@ -10,13 +10,13 @@ import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
 public class JavaScriptUtils {
     public static final String DEFAULT_ENGINE_NAME = "nashorn";
-    private static final Logger LOGGER = Logger.getLogger("JavaScriptUtils");
+    private static final Logger LOGGER = Logger.getLogger(JavaScriptUtils.class.getSimpleName());
 
     private static ScriptEngine engine;
     private static Map<String, ScriptEngine> engineMap = new HashMap<>();
 
     static {
-        LOGGER.fine("---- Initialize JavaScript engines...");
+        LOGGER.info("---- Initialize JavaScript engines...");
 
         ScriptEngineManager engineManager = new ScriptEngineManager();
         ScriptEngineFactory engineFactory = new NashornScriptEngineFactory();
@@ -31,7 +31,7 @@ public class JavaScriptUtils {
 
         engine = engineMap.get(engineFactory.getNames().get(0));
 
-        LOGGER.fine("---- Initialization finished.");
+        LOGGER.info("---- Initialization finished.");
     }
 
     private JavaScriptUtils() {}
