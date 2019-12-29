@@ -1,5 +1,7 @@
 package com.tyfanch.designpattern.behavioral.proxy;
 
+import java.lang.reflect.Proxy;
+
 public class ProxyTest {
     public static void main(String[] args) {
         System.out.println("---- testSimpleProxy");
@@ -12,6 +14,8 @@ public class ProxyTest {
         testForceProxyUnexpectedly1();
         System.out.println("---- testForceProxyUnexpectedly2");
         testForceProxyUnexpectedly2();
+        System.out.println("---- testDynamicProxy");
+        testDynamicProxy();
     }
 
     private static void testSimpleProxy() {
@@ -73,5 +77,17 @@ public class ProxyTest {
         proxy.killingBoss();
         proxy.upgrade();
         proxy.logout();
+    }
+
+    private static void testDynamicProxy() {
+        // 创建玩家
+        DynamicPlayer player = new DynamicPrimaryPlayer();
+        // 动态创建代理
+        DynamicPlayer instance = (DynamicPlayer) Proxy.newProxyInstance(
+            ClassLoader.getSystemClassLoader(),
+            new Class[]{DynamicPlayer.class},
+            new DynamicPlayerHandler(player));
+
+        instance.play();
     }
 }

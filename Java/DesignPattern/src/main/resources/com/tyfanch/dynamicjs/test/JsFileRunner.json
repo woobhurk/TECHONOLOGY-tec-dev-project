@@ -1,0 +1,20 @@
+{
+    "engine": "nashorn",
+    "namespace": "com.tyfanch.dynamicjs.JsFileRunner",
+    "methods": {
+        "showHello": {
+            "engine": "nashorn",
+            "script": "print('Hello!');"
+        },
+        "evalPlus": {
+            "engine": "ECMAScript",
+            "script": "%1$d + %2$d * 100;"
+        },
+        "evalPow": {
+            "script": "Math.pow(%1$d, %2$d);"
+        },
+        "evalSin": {
+            "script": "print(Math.sin(%1$s, %2$s));"
+        }
+    }
+}
