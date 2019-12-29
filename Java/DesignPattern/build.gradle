@@ -21,10 +21,12 @@ compileTestJava.options.encoding = 'UTF-8'
 
 allprojects {
     repositories {
+        // Local
+        maven { url 'file:/D:/ProgramData/maven/MavenRepository'}
+        mavenLocal()
         // Aliyun
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }
-        mavenLocal()
         mavenCentral()
         jcenter()
     }
