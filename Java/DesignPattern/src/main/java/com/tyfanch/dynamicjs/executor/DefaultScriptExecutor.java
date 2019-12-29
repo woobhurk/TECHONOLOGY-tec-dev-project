@@ -6,7 +6,7 @@ import com.tyfanch.dynamicjs.model.MethodConfig;
 import com.tyfanch.dynamicjs.model.ScriptConfig;
 import com.tyfanch.dynamicjs.parser.DefaultScriptParser;
 import com.tyfanch.dynamicjs.parser.ScriptParser;
-import com.tyfanch.dynamicjs.utils.JavaScriptUtils;
+import com.tyfanch.dynamicjs.utils.JsRunnerUtils;
 
 /**
  * 默认的脚本执行类
@@ -46,7 +46,7 @@ public class DefaultScriptExecutor implements ScriptExecutor {
 
         if (methodConfig != null) {
             engine = methodConfig.getEngine();
-            JavaScriptUtils.withEngine(engine);
+            JsRunnerUtils.withEngine(engine);
         } else {
             String errorMsg = String.format(
                 "Method `%s` in `%s` has no implementation in configuration",
@@ -82,7 +82,7 @@ public class DefaultScriptExecutor implements ScriptExecutor {
     private Object executeScript(String script) throws Exception {
         Object result;
 
-        result = JavaScriptUtils.eval(script);
+        result = JsRunnerUtils.eval(script);
 
         return result;
     }

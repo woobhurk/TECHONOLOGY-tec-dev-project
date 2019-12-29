@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
-public class JavaScriptUtils {
+public class JsRunnerUtils {
     public static final String DEFAULT_ENGINE_NAME = "nashorn";
-    private static final Logger LOGGER = Logger.getLogger(JavaScriptUtils.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(JsRunnerUtils.class.getSimpleName());
 
     private static ScriptEngine engine;
     private static Map<String, ScriptEngine> engineMap = new HashMap<>();
@@ -34,7 +34,7 @@ public class JavaScriptUtils {
         LOGGER.info("---- Initialization finished.");
     }
 
-    private JavaScriptUtils() {}
+    private JsRunnerUtils() {}
 
     public static void withEngine(String engineName) {
         engine = engineMap.getOrDefault(engineName, engineMap.get(DEFAULT_ENGINE_NAME));
