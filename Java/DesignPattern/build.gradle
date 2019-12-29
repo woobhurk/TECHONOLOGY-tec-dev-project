@@ -2,6 +2,15 @@ plugins {
     id 'java'
 }
 
+task showRepos {
+    // 显示所有的源
+    doLast {
+        repositories.each {
+            println "repository: ${it.name} ('${it.url}')"
+        }
+    }
+}
+
 group 'com.tyfanch'
 version '1.0-SNAPSHOT'
 
@@ -10,10 +19,15 @@ targetCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    jcenter()
+allprojects {
+    repositories {
+        // Aliyun
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
 }
 
 dependencies {
