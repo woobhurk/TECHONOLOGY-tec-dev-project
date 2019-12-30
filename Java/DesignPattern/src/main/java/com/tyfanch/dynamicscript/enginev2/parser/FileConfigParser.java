@@ -9,7 +9,7 @@ import com.tyfanch.dynamicscript.utils.JsonUtils;
 /**
  * 通过文件解析脚本配置
  *
- * @deprecated 暂时停止维护
+ * @deprecated 没啥意义，已停止维护
  */
 public class FileConfigParser implements ConfigParser {
     // 配置文件名

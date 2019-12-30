@@ -13,7 +13,7 @@ public abstract class BaseScriptRunnerFactory implements ScriptRunnerFactory {
         ScriptConfig scriptConfig;
         T runnerProxy;
 
-        scriptConfig = ScriptConfigFactory.readFromClass(tClass);
+        scriptConfig = ScriptConfigFactory.readByClass(tClass);
         runnerProxy = this.getRunnerProxy(scriptConfig, tClass);
 
         return runnerProxy;
@@ -24,7 +24,7 @@ public abstract class BaseScriptRunnerFactory implements ScriptRunnerFactory {
         ScriptConfig scriptConfig;
         T runnerProxy;
 
-        scriptConfig = ScriptConfigFactory.readFromNamespace(tClass);
+        scriptConfig = ScriptConfigFactory.readByNamespace(tClass);
         runnerProxy = this.getRunnerProxy(scriptConfig, tClass);
 
         return runnerProxy;
@@ -36,9 +36,8 @@ public abstract class BaseScriptRunnerFactory implements ScriptRunnerFactory {
         Class<T> tClass;
         T runnerProxy;
 
-        scriptConfig = ScriptConfigFactory.readFromNamespace(namespace);
-
         try {
+            scriptConfig = ScriptConfigFactory.readByNamespace(namespace);
             // 不能简单从参数namespace获取Class名称，
             // 需要从配置文件中定义的namespace来获取Class名称
             tClass = (Class<T>) Class.forName(scriptConfig.getNamespace());

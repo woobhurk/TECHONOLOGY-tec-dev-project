@@ -11,13 +11,15 @@ import com.tyfanch.dynamicscript.enginev2.parser.NamespaceConfigParser;
 public class ScriptConfigFactory {
     private static ConfigParser configParser;
 
+    private ScriptConfigFactory() {}
+
     /**
      * 从类中读取配置
      *
      * @param configClass 配置类
      * @return 脚本配置
      */
-    public static ScriptConfig readFromClass(Class<?> configClass) {
+    public static ScriptConfig readByClass(Class<?> configClass) {
         ScriptConfig scriptConfig;
 
         if (ScriptConfigManager.exists(configClass)) {
@@ -38,7 +40,7 @@ public class ScriptConfigFactory {
      * @param tClass 类
      * @return 脚本配置
      */
-    public static ScriptConfig readFromNamespace(Class<?> tClass) {
+    public static ScriptConfig readByNamespace(Class<?> tClass) {
         ScriptConfig scriptConfig;
 
         if (ScriptConfigManager.exists(tClass)) {
@@ -59,7 +61,7 @@ public class ScriptConfigFactory {
      * @param namespace 命名空间
      * @return 脚本配置
      */
-    public static ScriptConfig readFromNamespace(String namespace) {
+    public static ScriptConfig readByNamespace(String namespace) {
         ScriptConfig scriptConfig;
 
         if (ScriptConfigManager.exists(namespace)) {

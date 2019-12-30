@@ -12,6 +12,8 @@ import com.tyfanch.dynamicscript.enginev2.model.ScriptConfig;
 public class ScriptConfigManager {
     private static Map<String, ScriptConfig> scriptConfigMap = new HashMap<>();
 
+    private ScriptConfigManager() {}
+
     /**
      * 添加脚本配置
      * 如果已存在则将现有的配置和已存的配置合并
