@@ -5,11 +5,11 @@ import com.tyfanch.dynamicscript.enginev2.factory.ScriptRunnerFactory;
 
 public class DynamicScriptTest {
     public static void main(String[] args) {
-        testJsFileRunner();
-        System.out.println("----");
         testJsNamespaceRunner();
         System.out.println("----");
         testJsAnnotationRunner();
+        System.out.println("----");
+        testJsFileRunner();
     }
 
     private static void testJsAnnotationRunner() {
