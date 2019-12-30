@@ -1,6 +1,6 @@
 {
     "engine": "nashorn",
-    "namespace": "com.tyfanch.dynamicscript.enginev2.JsFileRunner",
+    "namespace": "com.tyfanch.dynamicscript.enginev2.test.JsNamespaceRunner",
     "methods": {
         "showHello": {
             "engine": "nashorn",

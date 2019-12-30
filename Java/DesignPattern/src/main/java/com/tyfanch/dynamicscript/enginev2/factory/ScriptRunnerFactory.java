@@ -14,11 +14,20 @@ public interface ScriptRunnerFactory {
     <T> T getByClass(Class<T> tClass);
 
     /**
-     * 通过命名空间获取可运行实例，从对应的文件中读取配置
+     * 通过类对应的命名空间获取可运行实例，从对应的文件中读取配置
      *
      * @param tClass 类
      * @param <T> 可运行实例的类型
      * @return 获取到的可运行实例
      */
     <T> T getByNamespace(Class<T> tClass);
+
+    /**
+     * 通过命名空间获取获取可运行实例，从对应的文件中读取配置
+     *
+     * @param namespace 命名空间
+     * @param <T> 可运行实例的类型
+     * @return 获取到的可运行实例
+     */
+    <T> T getByNamespace(String namespace);
 }

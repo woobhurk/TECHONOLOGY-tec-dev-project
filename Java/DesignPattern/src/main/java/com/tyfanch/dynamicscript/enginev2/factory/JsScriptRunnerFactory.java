@@ -13,12 +13,6 @@ public class JsScriptRunnerFactory extends BaseScriptRunnerFactory {
     // 运行控制类
     private ScriptRunnerHandler scriptRunnerHandler;
 
-    /**
-     * 获取可运行实例（代理）
-     * @param tClass 类
-     * @param <T> 可运行实例的类型
-     * @return 获取到的可运行实例的代理
-     */
     @Override
     protected  <T> T getRunnerProxy(ScriptConfig scriptConfig, Class<T> tClass) {
         T runnerProxy;

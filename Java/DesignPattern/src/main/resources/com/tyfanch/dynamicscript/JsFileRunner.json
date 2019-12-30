@@ -1,0 +1,28 @@
+{
+    "engine": "nashorn",
+    "namespace": "com.tyfanch.dynamicscript.enginev2.test.JsFileRunner",
+    "methods": {
+        "mulMyName": {
+            "engine": "nashorn",
+            "scripts": [
+                "var names = '';",
+                "for (var i = 0; i < ${times}; i++) {",
+                "    names += '${name}';",
+                "}",
+                "names;"
+            ]
+        },
+        "showMyName": {
+            "engine": "ECMAScript",
+            "script": "print('Hello ${name}, %1$s!')",
+            "scripts": [
+                "for (var i = 0; i < 10; i++) {",
+                "    print('${name}: ' + i)",
+                "}"
+            ]
+        },
+        "evalSin": {
+            "script": "print('sin(%1$s, %2$s) = ' + Math.sin(%1$s, ${b}));"
+        }
+    }
+}

@@ -7,6 +7,8 @@ public class DynamicScriptTest {
     public static void main(String[] args) {
         testJsFileRunner();
         System.out.println("----");
+        testJsNamespaceRunner();
+        System.out.println("----");
         testJsAnnotationRunner();
     }
 
@@ -21,15 +23,26 @@ public class DynamicScriptTest {
         runner.formatStr("aaa", "vbbb", "ME");
     }
 
+    private static void testJsNamespaceRunner() {
+        ScriptRunnerFactory scriptRunnerFactory = new JsScriptRunnerFactory();
+        JsNamespaceRunner runner;
+
+        System.out.println("$$$$ testJsNamespaceRunner");
+        runner = scriptRunnerFactory.getByNamespace(JsNamespaceRunner.class);
+        runner.showHello();
+        System.out.println(runner.evalPlus(4, 5));
+        System.out.println(runner.evalPow(2, 10));
+        runner.evalSin(30.0, 2.0f);
+    }
+
     private static void testJsFileRunner() {
         ScriptRunnerFactory scriptRunnerFactory = new JsScriptRunnerFactory();
         JsFileRunner runner;
 
         System.out.println("$$$$ testJsFileRunner");
-        runner = scriptRunnerFactory.getByNamespace(JsFileRunner.class);
-        runner.showHello();
-        System.out.println(runner.evalPlus(4, 5));
-        System.out.println(runner.evalPow(2, 10));
-        runner.evalSin(30.0, 2.0f);
+        runner = scriptRunnerFactory.getByNamespace("com.tyfanch.dynamicscript.JsFileRunner");
+        System.out.println(runner.mulMyName("AAA", 10));
+        runner.showMyName("BBB");
+        System.out.println(runner.evalSin(23.5, 95.2));
     }
 }

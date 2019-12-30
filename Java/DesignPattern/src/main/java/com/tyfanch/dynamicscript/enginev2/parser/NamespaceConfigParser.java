@@ -33,7 +33,7 @@ public class NamespaceConfigParser implements ConfigParser {
      * @param tClass 类
      */
     public NamespaceConfigParser(Class<?> tClass) {
-        this.namespace = tClass.getName();
+        this(tClass.getName());
     }
 
     @Override

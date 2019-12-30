@@ -3,11 +3,9 @@ package com.tyfanch.dynamicscript.enginev2.test;
 import com.tyfanch.dynamicscript.enginev2.annotation.ScriptParam;
 
 public interface JsFileRunner {
-    void showHello();
+    String mulMyName(@ScriptParam("name") String name, @ScriptParam("times") Integer times);
 
-    Integer evalPlus(Integer a, Integer b);
-
-    Double evalPow(@ScriptParam("a") Integer a, @ScriptParam("b") Integer b);
+    void showMyName(@ScriptParam("name") String name);
 
     Double evalSin(double a, @ScriptParam("b") double b);
 }
