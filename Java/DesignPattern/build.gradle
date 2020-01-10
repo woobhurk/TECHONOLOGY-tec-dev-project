@@ -27,6 +27,7 @@ allprojects {
         // Aliyun
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }
+        // Default
         mavenCentral()
         jcenter()
     }
