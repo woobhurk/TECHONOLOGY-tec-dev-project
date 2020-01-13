@@ -1,15 +1,17 @@
 package com.tyfanch.designpattern.creational.prototype;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import com.tyfanch.designpattern.utils.TyObjectUtils;
 
 public class Mail implements Serializable, Cloneable {
     private String subject;
     private String receiver;
     private String content;
+
+    public Mail(MailTemplate mailTemplate) {
+        this.subject = mailTemplate.getSubject();
+        this.content = mailTemplate.getContent();
+    }
 
     public String getSubject() {
         return this.subject;
@@ -38,28 +40,8 @@ public class Mail implements Serializable, Cloneable {
     @Override
     protected Object clone() {
         Mail clonedMail;
-        ByteArrayOutputStream byteArrayOutputStream;
-        ObjectOutputStream objectOutputStream;
-        ByteArrayInputStream byteArrayInputStream;
-        ObjectInputStream objectInputStream;
 
-        try {
-            // 浅拷贝
-            //clonedMail = (Mail) super.clone();
-
-            // 深拷贝
-            // 写入输出流
-            byteArrayOutputStream = new ByteArrayOutputStream();
-            objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-            objectOutputStream.writeObject(byteArrayOutputStream);
-            // 从输出流读取
-            byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-            objectInputStream = new ObjectInputStream(byteArrayInputStream);
-            clonedMail = (Mail) objectInputStream.readObject();
-        } catch (Exception e) {
-            clonedMail = null;
-            e.printStackTrace();
-        }
+        clonedMail = TyObjectUtils.deepClone(this);
 
         return clonedMail;
     }
