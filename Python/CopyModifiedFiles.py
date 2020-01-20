@@ -355,7 +355,7 @@ class FileCopier():
                 shutil.copystat(fromFile, toFile)
                 print('---- Done.')
             else:
-                print('!!!! Not a file.')
+                print('!!!! Not a file.\n\n\n\n')
         except Exception as e:
             print(e)
 
