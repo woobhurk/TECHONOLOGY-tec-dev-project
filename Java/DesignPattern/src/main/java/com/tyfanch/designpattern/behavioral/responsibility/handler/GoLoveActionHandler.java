@@ -26,11 +26,6 @@ public class GoLoveActionHandler implements LoveActionHandler {
     }
 
     @Override
-    public void setNext(LoveActionHandler nextHandler) {
-
-    }
-
-    @Override
     public LoveAction getLoveAction() {
         return LoveAction.GO;
     }

@@ -33,7 +33,5 @@ public interface LoveActionHandler {
 
     LoveActionHandler getNext();
 
-    void setNext(LoveActionHandler nextHandler);
-
     LoveAction getLoveAction();
 }
