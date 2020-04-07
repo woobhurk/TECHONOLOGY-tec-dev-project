@@ -1,7 +1,7 @@
 package com.tyfanch.designpattern.creational.prototype;
 
 import java.io.Serializable;
-import com.tyfanch.designpattern.utils.TyObjectUtils;
+import com.tyfanch.designpattern.utils.TyzObjectUtils;
 
 public class Mail implements Serializable, Cloneable {
     private String subject;
@@ -41,7 +41,7 @@ public class Mail implements Serializable, Cloneable {
     protected Object clone() {
         Mail clonedMail;
 
-        clonedMail = TyObjectUtils.deepClone(this);
+        clonedMail = TyzObjectUtils.deepClone(this);
 
         return clonedMail;
     }

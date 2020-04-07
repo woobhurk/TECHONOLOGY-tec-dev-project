@@ -6,8 +6,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 @SuppressWarnings("unchecked")
-public class TyObjectUtils {
-    private TyObjectUtils() {}
+public class TyzObjectUtils {
+    private TyzObjectUtils() {}
 
     public static <T> T deepClone(T obj) {
         T clonedObj;
