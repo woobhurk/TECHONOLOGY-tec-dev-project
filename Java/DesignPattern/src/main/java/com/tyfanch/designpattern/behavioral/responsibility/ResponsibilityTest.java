@@ -1,7 +1,7 @@
 package com.tyfanch.designpattern.behavioral.responsibility;
 
+import com.tyfanch.designpattern.behavioral.responsibility.action.LoveAction;
 import com.tyfanch.designpattern.behavioral.responsibility.handler.LoveActionHandler;
-import com.tyfanch.designpattern.behavioral.responsibility.handler.LoveActionHandlerPool;
 import com.tyfanch.designpattern.behavioral.responsibility.love.GoLove;
 
 /**
@@ -20,7 +20,7 @@ public class ResponsibilityTest {
     private static void testResponsibility() {
         LoveActionHandler loveActionHandler;
 
-        loveActionHandler = LoveActionHandlerPool.SEE_ACTION.getLoveActionHandler();
+        loveActionHandler = LoveAction.SEE.get();
         loveActionHandler.handle(new GoLove());
     }
 }

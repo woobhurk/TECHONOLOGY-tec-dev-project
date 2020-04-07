@@ -19,6 +19,7 @@ public interface LoveActionHandler {
             result = this.proceed(love);
         } else {
             if (this.getNext() != null) {
+                System.out.println("该做下一步咯...");
                 result = this.getNext().handle(love);
             } else {
                 System.out.println("做完咯~");
@@ -31,7 +32,9 @@ public interface LoveActionHandler {
 
     boolean proceed(Love love);
 
-    LoveActionHandler getNext();
+    default LoveActionHandler getNext() {
+        return LoveActionHandlerChain.getNext(this);
+    }
 
     LoveAction getLoveAction();
 }

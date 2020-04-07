@@ -21,11 +21,6 @@ public class GoLoveActionHandler implements LoveActionHandler {
     }
 
     @Override
-    public LoveActionHandler getNext() {
-        return null;
-    }
-
-    @Override
     public LoveAction getLoveAction() {
         return LoveAction.GO;
     }

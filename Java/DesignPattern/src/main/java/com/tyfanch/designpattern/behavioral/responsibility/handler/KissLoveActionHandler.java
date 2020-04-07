@@ -21,11 +21,6 @@ public class KissLoveActionHandler implements LoveActionHandler {
     }
 
     @Override
-    public LoveActionHandler getNext() {
-        return LoveActionHandlerPool.GO_ACTION.getLoveActionHandler();
-    }
-
-    @Override
     public LoveAction getLoveAction() {
         return LoveAction.KISS;
     }

@@ -21,11 +21,6 @@ public class SeeLoveActionHandler implements LoveActionHandler {
     }
 
     @Override
-    public LoveActionHandler getNext() {
-        return LoveActionHandlerPool.BOW_ACTION.getLoveActionHandler();
-    }
-
-    @Override
     public LoveAction getLoveAction() {
         return LoveAction.SEE;
     }
