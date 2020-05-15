@@ -1,0 +1,11 @@
+{
+  "name": "first-electron",
+  "version": "1.0.0",
+  "description": "First electron app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "tyfanchz",
+  "license": "NONE"
+}
