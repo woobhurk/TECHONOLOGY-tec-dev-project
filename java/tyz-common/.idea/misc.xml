@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$" />
+  </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
+  </component>
+  <component name="MyBatisGeneratorConfiguration">
+    <option name="globalConfig">
+      <GlobalConfig>
+        <option name="annotation" value="true" />
+        <option name="annotationDAO" value="true" />
+        <option name="comment" value="true" />
+        <option name="domainPackage" value="" />
+        <option name="examplePackage" value="" />
+        <option name="examplePostfix" value="Example" />
+        <option name="mapperPackage" value="" />
+        <option name="mapperPostfix" value="Mapper" />
+        <option name="moduleRootPath" value="" />
+        <option name="mysql8" value="true" />
+        <option name="needToStringHashcodeEquals" value="true" />
+        <option name="resourcePath" value="src/main/resources" />
+        <option name="sourcePath" value="src/main/java" />
+        <option name="tablePrefix" value="" />
+        <option name="useExample" value="true" />
+        <option name="xmlPackage" value="mapper" />
+      </GlobalConfig>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="PyPackaging">
+    <option name="earlyReleasesAsUpgrades" value="true" />
+  </component>
+</project>
