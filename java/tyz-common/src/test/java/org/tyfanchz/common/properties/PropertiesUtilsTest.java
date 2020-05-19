@@ -8,7 +8,7 @@ package org.tyfanchz.common.properties;
  * @author tyfanchz
  * @date 2020-05-19
  */
-public class PropertiesTest {
+public class PropertiesUtilsTest {
     public static void main(String[] args) {
         test();
     }
