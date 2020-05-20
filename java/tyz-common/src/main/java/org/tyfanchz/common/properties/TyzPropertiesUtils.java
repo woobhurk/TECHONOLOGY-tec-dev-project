@@ -60,7 +60,7 @@ public class TyzPropertiesUtils {
         try {
             properties.load(TyzPropertiesUtils.class.getResourceAsStream(filename));
         } catch (Exception e) {
-            System.err.println("Cannot load " + filename);
+            System.err.println("Cannot load: " + filename);
         }
 
         return properties;
