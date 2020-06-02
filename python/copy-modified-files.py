@@ -1,6 +1,6 @@
 # CopyModifiedFiles
 # Date: 2019-12-17
-# Author: tyfanch
+# Author: tyfanchz
 
 r"""
 使用方法：
@@ -38,12 +38,12 @@ r"""
     /cn/abc/def/SomeClass3.java
     web/html/somePage1.html
     web/html/somePage2.html
-    resources/applicationCOntext.xml
+    resources/applicationContext.xml
     resource/mybatis-config.xml
     ```
 """
 
-from typing import AnyStr, List, Dict
+from typing import List, Dict
 import sys
 import os
 import shutil
@@ -51,21 +51,21 @@ import re
 import logging
 
 
-CONFIG_COPY_TYPE: AnyStr = 'TYPE'
-CONFIG_FROM: AnyStr = 'FROM'
-CONFIG_TO: AnyStr = 'TO'
-CONFIG_PREFIX: AnyStr = 'PREFIX'
-CONFIG_WEB: AnyStr = 'WEB'
-CONFIG_RES: AnyStr = 'RES'
-CONFIG_SRC: AnyStr = 'SRC'
+CONFIG_COPY_TYPE: str = 'TYPE'
+CONFIG_FROM: str = 'FROM'
+CONFIG_TO: str = 'TO'
+CONFIG_PREFIX: str = 'PREFIX'
+CONFIG_WEB: str = 'WEB'
+CONFIG_RES: str = 'RES'
+CONFIG_SRC: str = 'SRC'
 
-COPY_TYPE_DIST: AnyStr = 'DIST'
-COPY_TYPE_SRC: AnyStr = 'SRC'
+COPY_TYPE_DIST: str = 'DIST'
+COPY_TYPE_SRC: str = 'SRC'
 
-DEF_COPY_TYPE: AnyStr = COPY_TYPE_DIST
-DEF_WEB_PREFIX: AnyStr = 'web WebRoot'
-DEF_RESOURCES_PREFIX: AnyStr = 'resources'
-DEF_SRC_PREFIX: AnyStr = ''
+DEF_COPY_TYPE: str = COPY_TYPE_DIST
+DEF_WEB_PREFIX: str = 'web WebRoot'
+DEF_RESOURCES_PREFIX: str = 'resources'
+DEF_SRC_PREFIX: str = ''
 
 
 class MainClass():
@@ -75,7 +75,7 @@ class MainClass():
         super().__init__()
         pass
 
-    def main(self, filename: AnyStr = '') -> None:
+    def main(self, filename: str = '') -> None:
         """复制的主方法。
 
         通过读取配置文件来复制需要的文件。
@@ -100,12 +100,12 @@ class FileCopier():
         super().__init__()
         pass
 
-    def copyFilesByType(self, filename: AnyStr,
-            fileCopierDict: Dict[AnyStr, object]) -> None:
+    def copyFilesByType(self, filename: str,
+            fileCopierDict: Dict[str, object]) -> None:
         """根据复制类型来复制文件
         """
-        fileLines: List[AnyStr] = self.getFileLines(filename)
-        copyType: AnyStr = self.getCopyType(fileLines)
+        fileLines: List[str] = self.getFileLines(filename)
+        copyType: str = self.getCopyType(fileLines)
 
         if copyType.upper() in fileCopierDict:
             fileCopier = fileCopierDict[copyType]
@@ -116,11 +116,11 @@ class FileCopier():
 
         pass
 
-    def getFileLines(self, filename: AnyStr) -> List[AnyStr]:
+    def getFileLines(self, filename: str) -> List[str]:
         """获取文件内容，并转化为数组
         """
-        fileContent: AnyStr = None
-        fileLines: List[AnyStr] = []
+        fileContent: str = ''
+        fileLines: List[str] = []
 
         # 获取文件内容
         with open(filename, 'r', encoding='utf-8') as file:
@@ -129,7 +129,7 @@ class FileCopier():
         # 将文件内容分割存到数组中，不添加空行，
         # 并替换反斜杠为斜杠、去除多余斜杠、去除每行的无效空格
         for line in fileContent.splitlines():
-            formattedLine: AnyStr = line.replace('\\', '/').strip()
+            formattedLine: str = line.replace('\\', '/').strip()
 
             if formattedLine != '':
                 fileLines.append(formattedLine)
@@ -137,10 +137,10 @@ class FileCopier():
         return fileLines
         pass
 
-    def getCopyConfig(self, fileLines: List[AnyStr]) -> Dict[AnyStr, AnyStr]:
+    def getCopyConfig(self, fileLines: List[str]) -> Dict[str, str]:
         """获取文件中的配置信息
         """
-        copyConfig: Dict[AnyStr, AnyStr] = {
+        copyConfig: Dict[str, str] = {
             CONFIG_COPY_TYPE: self.getCopyType(fileLines),
             CONFIG_FROM: self.getFromDir(fileLines),
             CONFIG_TO: self.getToDir(fileLines),
@@ -153,10 +153,10 @@ class FileCopier():
         return copyConfig
         pass
 
-    def getCopyType(self, fileLines: List[AnyStr]) -> AnyStr:
+    def getCopyType(self, fileLines: List[str]) -> str:
         """获取复制方式信息
         """
-        copyType: AnyStr = DEF_COPY_TYPE
+        copyType: str = DEF_COPY_TYPE
 
         for line in fileLines:
             if re.match(CONFIG_COPY_TYPE + r' *:.*', line.upper()):
@@ -172,11 +172,11 @@ class FileCopier():
         return copyType
         pass
 
-    def getFromDir(self, fileLines: List[AnyStr]) -> AnyStr:
+    def getFromDir(self, fileLines: List[str]) -> str:
         """获取源文件夹信息
         eg: copy/from/path
         """
-        fromDir: AnyStr = ''
+        fromDir: str = ''
 
         for line in fileLines:
             if re.match(CONFIG_FROM + r' *:.*', line.upper()):
@@ -198,11 +198,11 @@ class FileCopier():
         return fromDir
         pass
 
-    def getToDir(self, fileLines: List[AnyStr]) -> AnyStr:
+    def getToDir(self, fileLines: List[str]) -> str:
         """获取目标文件夹信息
         eg: copy/to/path
         """
-        toDir: AnyStr = 'destination'
+        toDir: str = 'destination'
 
         for line in fileLines:
             if re.match(CONFIG_TO + r' *:.*', line.upper()):
@@ -221,11 +221,11 @@ class FileCopier():
         return toDir
         pass
 
-    def getPrefix(self, fileLines: List[AnyStr]) -> AnyStr:
+    def getPrefix(self, fileLines: List[str]) -> str:
         """获取所有行的前缀信息，以/结尾
         eg: some/path/of/prefix/
         """
-        prefix: AnyStr = ''
+        prefix: str = ''
 
         for line in fileLines:
             if re.match(CONFIG_PREFIX + r' *:.*', line.upper()):
@@ -244,13 +244,13 @@ class FileCopier():
         return prefix
         pass
 
-    def getWebPrefix(self, fileLines: List[AnyStr]) -> AnyStr:
+    def getWebPrefix(self, fileLines: List[str]) -> str:
         """获取web文件夹的前缀信息，以/结尾
         eg: (^web/|^WebRoot/)
         """
-        webPrefix: AnyStr = DEF_WEB_PREFIX
-        webPrefixItems: List[AnyStr] = []
-        webPrefixPattern: AnyStr = ''
+        webPrefix: str = DEF_WEB_PREFIX
+        webPrefixItems: List[str] = []
+        webPrefixPattern: str = ''
 
         for line in fileLines:
             if re.match(CONFIG_WEB + r' *:.*', line.upper()):
@@ -274,13 +274,13 @@ class FileCopier():
         return webPrefixPattern
         pass
 
-    def getResourcesPrefix(self, fileLines: List[AnyStr]) -> AnyStr:
+    def getResourcesPrefix(self, fileLines: List[str]) -> str:
         """获取resources文件夹的前缀信息，以/结尾
         eg: (^res/|^resource/|^resources/)
         """
-        resourcesPrefix: AnyStr = DEF_RESOURCES_PREFIX
-        resourcesPrefixItems: List[AnyStr] = []
-        resourcesPrefixPattern: AnyStr = ''
+        resourcesPrefix: str = DEF_RESOURCES_PREFIX
+        resourcesPrefixItems: List[str] = []
+        resourcesPrefixPattern: str = ''
 
         for line in fileLines:
             if re.match(CONFIG_RES + r' *:.*', line.upper()):
@@ -304,13 +304,13 @@ class FileCopier():
         return resourcesPrefixPattern
         pass
 
-    def getSrcPrefix(self, fileLines: List[AnyStr]) -> AnyStr:
+    def getSrcPrefix(self, fileLines: List[str]) -> str:
         """获取src文件夹前缀信息，以/结尾
         eg: (^/|^src/|^source/|^main/src/)
         """
-        srcPrefix: AnyStr = DEF_SRC_PREFIX
-        srcPrefixItems: List[AnyStr] = []
-        srcPrefixPattern: AnyStr = ''
+        srcPrefix: str = DEF_SRC_PREFIX
+        srcPrefixItems: List[str] = []
+        srcPrefixPattern: str = ''
 
         for line in fileLines:
             if re.match(CONFIG_SRC + r' *:.*', line.upper()):
@@ -334,12 +334,12 @@ class FileCopier():
         return srcPrefixPattern
         pass
 
-    def copyFile(self, baseFromDir: AnyStr, baseToDir: AnyStr,
-        file: AnyStr) -> None:
+    def copyFile(self, baseFromDir: str, baseToDir: str,
+        file: str) -> None:
         """复制文件
         """
-        fromFile: AnyStr = baseFromDir + '/' + file
-        toFile: AnyStr = baseToDir + '/' + file
+        fromFile: str = baseFromDir + '/' + file
+        toFile: str = baseToDir + '/' + file
 
         print('---- Copying %s\n     to %s' % (fromFile, toFile))
 
@@ -347,7 +347,7 @@ class FileCopier():
             if os.path.isfile(fromFile):
                 # 如果fromFile为一个文件则复制
                 # 获取目标文件所在目录
-                folder: AnyStr = os.path.split(toFile)[0]
+                folder: str = os.path.split(toFile)[0]
                 # 在目标目录里面创建相应的目录结构
                 os.makedirs(folder, exist_ok=True)
                 # 复制文件和属性
@@ -368,13 +368,13 @@ class DistFileCopier(FileCopier):
     def __init__(self) -> None:
         super().__init__()
 
-    def getWebFiles(self, fileLines: List[AnyStr],
-        copyConfig: Dict[AnyStr, AnyStr]) -> List[AnyStr]:
+    def getWebFiles(self, fileLines: List[str],
+        copyConfig: Dict[str, str]) -> List[str]:
         """获取静态资源文件信息
         """
-        webFiles: List[AnyStr] = []
-        prefix: AnyStr = copyConfig[CONFIG_PREFIX]
-        webPrefix: AnyStr = copyConfig[CONFIG_WEB]
+        webFiles: List[str] = []
+        prefix: str = copyConfig[CONFIG_PREFIX]
+        webPrefix: str = copyConfig[CONFIG_WEB]
 
         for line in fileLines:
             # 去掉前缀
@@ -390,13 +390,13 @@ class DistFileCopier(FileCopier):
         return webFiles
         pass
 
-    def getResourcesFiles(self, fileLines: List[AnyStr],
-        copyConfig: Dict[AnyStr, AnyStr]) -> List[AnyStr]:
+    def getResourcesFiles(self, fileLines: List[str],
+        copyConfig: Dict[str, str]) -> List[str]:
         """获取资源文件信息
         """
-        resourcesFiles: List[AnyStr] = []
-        prefix: AnyStr = copyConfig[CONFIG_PREFIX]
-        resourcesPrefix: AnyStr = copyConfig[CONFIG_RES]
+        resourcesFiles: List[str] = []
+        prefix: str = copyConfig[CONFIG_PREFIX]
+        resourcesPrefix: str = copyConfig[CONFIG_RES]
 
         for line in fileLines:
             # 去掉前缀
@@ -412,15 +412,15 @@ class DistFileCopier(FileCopier):
         return resourcesFiles
         pass
 
-    def getClassFiles(self, fileLines: List[AnyStr],
-        copyConfig: Dict[AnyStr, AnyStr]) -> List[AnyStr]:
+    def getClassFiles(self, fileLines: List[str],
+        copyConfig: Dict[str, str]) -> List[str]:
         """获取.class文件信息
         """
-        classFiles: List[AnyStr] = []
-        prefix: AnyStr = copyConfig[CONFIG_PREFIX]
-        webPrefix: AnyStr = copyConfig[CONFIG_WEB]
-        resourcesPrefix: AnyStr = copyConfig[CONFIG_RES]
-        srcPrefix: AnyStr = copyConfig[CONFIG_SRC]
+        classFiles: List[str] = []
+        prefix: str = copyConfig[CONFIG_PREFIX]
+        webPrefix: str = copyConfig[CONFIG_WEB]
+        resourcesPrefix: str = copyConfig[CONFIG_RES]
+        srcPrefix: str = copyConfig[CONFIG_SRC]
 
         for line in fileLines:
             # 去掉前缀
@@ -443,20 +443,20 @@ class DistFileCopier(FileCopier):
         return classFiles
         pass
 
-    def copyFiles(self, filename: AnyStr) -> None:
+    def copyFiles(self, filename: str) -> None:
         """复制文件的总方法
         """
-        fileLines: List[AnyStr] = self.getFileLines(filename)
+        fileLines: List[str] = self.getFileLines(filename)
         print('$$$$ fileLines: ', fileLines)
 
         print('==============================================================')
-        copyConfig: Dict[AnyStr, AnyStr] = self.getCopyConfig(fileLines)
-        copyType: AnyStr = copyConfig[CONFIG_COPY_TYPE]
-        fromDir: AnyStr = copyConfig[CONFIG_FROM]
-        toDir: AnyStr = copyConfig[CONFIG_TO]
-        webPrefix: AnyStr = copyConfig[CONFIG_WEB]
-        resourcesPrefix: AnyStr = copyConfig[CONFIG_RES]
-        srcPrefix: AnyStr = copyConfig[CONFIG_SRC]
+        copyConfig: Dict[str, str] = self.getCopyConfig(fileLines)
+        copyType: str = copyConfig[CONFIG_COPY_TYPE]
+        fromDir: str = copyConfig[CONFIG_FROM]
+        toDir: str = copyConfig[CONFIG_TO]
+        webPrefix: str = copyConfig[CONFIG_WEB]
+        resourcesPrefix: str = copyConfig[CONFIG_RES]
+        srcPrefix: str = copyConfig[CONFIG_SRC]
         print('$$$$ copyConfig: ', copyConfig)
         print('$$$$ copyType: ', copyType)
         print('$$$$ fromDir: ', fromDir)
@@ -464,12 +464,12 @@ class DistFileCopier(FileCopier):
         print('$$$$ webPrefix: ', webPrefix)
         print('$$$$ resourcesPrefix: ', resourcesPrefix)
         print('$$$$ srcPrefix: ', srcPrefix)
-        webFiles: List[AnyStr] = self.getWebFiles(fileLines, copyConfig)
+        webFiles: List[str] = self.getWebFiles(fileLines, copyConfig)
         print('$$$$ webFiles: ', webFiles)
-        resourcesFiles: List[AnyStr] = self.getResourcesFiles(fileLines,
+        resourcesFiles: List[str] = self.getResourcesFiles(fileLines,
             copyConfig)
         print('$$$$ resourcesFiles: ', resourcesFiles)
-        classFiles: List[AnyStr] = self.getClassFiles(fileLines, copyConfig)
+        classFiles: List[str] = self.getClassFiles(fileLines, copyConfig)
         print('$$$$ classFiles: ', classFiles)
 
         print('==============================================================')
@@ -478,12 +478,12 @@ class DistFileCopier(FileCopier):
         self.copyClassFiles(fromDir, toDir, classFiles)
         pass
 
-    def copyWebFiles(self, fromDir: AnyStr, toDir: AnyStr,
-        webFiles: List[AnyStr]) -> None:
+    def copyWebFiles(self, fromDir: str, toDir: str,
+        webFiles: List[str]) -> None:
         """复制静态资源文件
         """
-        baseFromDir: AnyStr = fromDir
-        baseToDir: AnyStr = toDir
+        baseFromDir: str = fromDir
+        baseToDir: str = toDir
 
         print('$$$$ Copying web files...')
 
@@ -492,12 +492,12 @@ class DistFileCopier(FileCopier):
 
         pass
 
-    def copyResourcesFiles(self, fromDir: AnyStr, toDir: AnyStr,
-        resourcesFiles: List[AnyStr]) -> None:
+    def copyResourcesFiles(self, fromDir: str, toDir: str,
+        resourcesFiles: List[str]) -> None:
         """复制资源文件
         """
-        baseFromDir: AnyStr = fromDir + '/WEB-INF/classes'
-        baseToDir: AnyStr = toDir + '/WEB-INF/classes'
+        baseFromDir: str = fromDir + '/WEB-INF/classes'
+        baseToDir: str = toDir + '/WEB-INF/classes'
 
         print('$$$$ Copying resources files...')
 
@@ -506,12 +506,12 @@ class DistFileCopier(FileCopier):
 
         pass
 
-    def copyClassFiles(self, fromDir: AnyStr, toDir: AnyStr,
-        classFiles: List[AnyStr]) -> None:
+    def copyClassFiles(self, fromDir: str, toDir: str,
+        classFiles: List[str]) -> None:
         """复制.class文件
         """
-        baseFromDir: AnyStr = fromDir + '/WEB-INF/classes'
-        baseToDir: AnyStr = toDir + '/WEB-INF/classes'
+        baseFromDir: str = fromDir + '/WEB-INF/classes'
+        baseToDir: str = toDir + '/WEB-INF/classes'
 
         print('$$$$ Copying class files...')
 
@@ -528,12 +528,12 @@ class SrcFileCopier(FileCopier):
         super().__init__()
         pass
 
-    def getSrcFiles(self, fileLines: List[AnyStr],
-        copyConfig: Dict[AnyStr, AnyStr]) -> list:
+    def getSrcFiles(self, fileLines: List[str],
+        copyConfig: Dict[str, str]) -> list:
         """获取源码文件信息
         """
-        srcFiles: List[AnyStr] = []
-        prefix: AnyStr = copyConfig[CONFIG_PREFIX]
+        srcFiles: List[str] = []
+        prefix: str = copyConfig[CONFIG_PREFIX]
 
         for line in fileLines:
             # 去掉前缀
@@ -547,22 +547,22 @@ class SrcFileCopier(FileCopier):
         return srcFiles
         pass
 
-    def copyFiles(self, filename: AnyStr) -> None:
+    def copyFiles(self, filename: str) -> None:
         """复制文件的总方法
         """
-        fileLines: List[AnyStr] = self.getFileLines(filename)
+        fileLines: List[str] = self.getFileLines(filename)
         print('$$$$ fileLines: ', fileLines)
 
         print('==============================================================')
-        copyConfig: Dict[AnyStr, AnyStr] = self.getCopyConfig(fileLines)
-        copyType: AnyStr = copyConfig[CONFIG_COPY_TYPE]
-        fromDir: AnyStr = copyConfig[CONFIG_FROM]
-        toDir: AnyStr = copyConfig[CONFIG_TO]
+        copyConfig: Dict[str, str] = self.getCopyConfig(fileLines)
+        copyType: str = copyConfig[CONFIG_COPY_TYPE]
+        fromDir: str = copyConfig[CONFIG_FROM]
+        toDir: str = copyConfig[CONFIG_TO]
         print('$$$$ copyConfig: ', copyConfig)
         print('$$$$ copyType: ', copyType)
         print('$$$$ fromDir: ', fromDir)
         print('$$$$ toDir: ', toDir)
-        srcFiles: List[AnyStr] = self.getSrcFiles(fileLines, copyConfig)
+        srcFiles: List[str] = self.getSrcFiles(fileLines, copyConfig)
         print('$$$$ srcFiles: ', srcFiles)
 
         print('==============================================================')
@@ -570,12 +570,12 @@ class SrcFileCopier(FileCopier):
 
         pass
 
-    def copySrcFiles(self, fromDir: AnyStr, toDir: AnyStr,
-        srcFiles: List[AnyStr]) -> None:
+    def copySrcFiles(self, fromDir: str, toDir: str,
+        srcFiles: List[str]) -> None:
         """复制源码文件
         """
-        baseFromDir: AnyStr = fromDir
-        baseToDir: AnyStr = toDir
+        baseFromDir: str = fromDir
+        baseToDir: str = toDir
 
         print('$$$$ Copying src files...')
 
