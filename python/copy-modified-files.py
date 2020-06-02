@@ -101,9 +101,10 @@ class FileCopier():
         pass
 
     def copyFilesByType(self, filename: str,
-            fileCopierDict: Dict[str, object]) -> None:
+            fileCopierDict: Dict[str, FileCopier]) -> None:
         """根据复制类型来复制文件
         """
+        fileCopier: FileCopier = FileCopier()
         fileLines: List[str] = self.getFileLines(filename)
         copyType: str = self.getCopyType(fileLines)
 
