@@ -24,13 +24,21 @@ import org.springframework.stereotype.Component;
 public class RequestLogAspect {
     private long methodStartTime = 0;
 
-    @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
-    public void annotatedBySpring() {}
+    /**
+     * 切入带有 {@link org.springframework.web.bind.annotation.RequestMapping} 注解
+     * 且不带有 {@link com.tyfanchz.java.stuspringbootaop.annotation.DisableRequestLog} 注解的方法
+     */
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping)" +
+            "&& !@annotation(com.tyfanchz.java.stuspringbootaop.annotation.DisableRequestLog)")
+    public void annotatedByRequestMapping() {}
 
+    /**
+     * 切入带有 {@link com.tyfanchz.java.stuspringbootaop.annotation.EnableRequestLog} 注解的方法
+     */
     @Pointcut("@annotation(com.tyfanchz.java.stuspringbootaop.annotation.EnableRequestLog)")
     public void annotetedByCustom() {}
 
-    @Around("annotatedBySpring()")
+    @Around("annotatedByRequestMapping()")
     public Object aroundRequest(ProceedingJoinPoint joinPoint) {
         Object result;
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();

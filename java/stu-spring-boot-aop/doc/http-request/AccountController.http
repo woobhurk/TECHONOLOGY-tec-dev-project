@@ -1,0 +1,23 @@
+###
+GET http://localhost:4400/stu-spring-boot-aop/account/whoami
+
+
+###
+GET http://localhost:4400/stu-spring-boot-aop/account/testKeyValue
+
+
+###
+POST http://localhost:4400/stu-spring-boot-aop/account/testMap
+Content-Type: application/json
+
+{
+    "aaa": "key aaa",
+    "bbb": "key bbb"
+}
+
+
+###
+POST http://localhost:4400/stu-spring-boot-aop/account/testTime
+Content-Type: application/x-www-form-urlencoded
+
+id=99&name=my-name&createTime=2020-11-22
