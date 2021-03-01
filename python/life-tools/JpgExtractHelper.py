@@ -54,7 +54,7 @@ class JpgExtractHelper(object):
             if self.isRvfTextFile(rvfFile):
                 jpgDataList = self.__readJpgTextData(rvfFile)
             else:
-                jpgDataList = self.__readJpgBinaryData(rvfFile)
+                jpgDataList = self.__readJpgBinaryData2(rvfFile)
             self.__saveAllJpgFiles(rvfFile, jpgDataList)
         logging.info("DONE!")
 
@@ -68,7 +68,7 @@ class JpgExtractHelper(object):
         return FileUtils.isFileTypeText(rvfFile)
 
     def __readJpgTextData(self, rvfFile: str) -> List[bytes]:
-        """- 从文本型 rvf 文件中提取 jpg 文件。
+        """- 从文本型 rvf 文件中提取 jpg 数据。
 
         - param
             - `rvfFile` rvf 文件
@@ -87,31 +87,58 @@ class JpgExtractHelper(object):
                 index += 1
         return jpgDataList
 
-    def __readJpgBinaryData(self, rvfFile: str) -> List[bytes]:
+    def __readJpgBinaryData2(self, rvfFile: str) -> List[bytes]:
+        """- 从二进制类型 rvf 文件中提取 jpg 数据。
+
+        - param
+            - `rvfFile` rvf 文件
+        - return 提取到的 jpg 二进制数据列表
+        """
+        JPG_FILE_HEADER: bytes = b"\xff\xd8\xff\xe0"
+        JPG_FILE_TAIL: bytes = b"\xff\xd9"
+        BUFFER_SIZE: int = 1024
+
         logging.info("Extracting jpg binary from %s..." % rvfFile)
-        jpgHeader: bytes = b"\xff\xd8\xff\xe0"
-        jpgTail: bytes = b"\xff\xd9"
         jpgDataList: List[bytes] = []
         rvfFileSize: int = os.path.getsize(rvfFile)
         with open(rvfFile, "rb") as f:
-            index: int = 0
-            while index < rvfFileSize:
-                f.seek(index)
-                data = f.read(4)
-                if data == jpgHeader:
-                    jpgData: bytes = data
-                    index += 4
-                    data = f.read(2)
-                    while data != jpgTail and index < rvfFileSize:
-                        jpgData += bytes([data[0]])
-                        index += 1
-                        f.seek(index)
-                        data = f.read(2)
-                    jpgData += jpgTail
-                    index += 2
+            pointer: int = 0
+            while pointer < rvfFileSize:
+                f.seek(pointer)
+                data = f.read(BUFFER_SIZE)
+                headerIndex: int = data.find(JPG_FILE_HEADER)
+                # 判断是否找到了 jpg 文件头
+                if headerIndex >= 0:
+                    # 如果找到了：
+                    jpgData: bytes = bytes()
+                    # 指针移动到 jpg 文件头处
+                    pointer += headerIndex
+                    f.seek(pointer)
+                    # 向后开始读取 jpg 数据
+                    data = f.read(BUFFER_SIZE)
+                    tailIndex: int = data.find(JPG_FILE_TAIL)
+                    # 进入循环，直到读取到 jpg 文件尾或指针到达 rvf 文件尾
+                    while tailIndex < 0 and pointer < rvfFileSize:
+                        # 拼接 jpg 数据
+                        jpgData += data
+                        # 向后读取
+                        pointer += BUFFER_SIZE
+                        f.seek(pointer)
+                        data = f.read(BUFFER_SIZE)
+                        tailIndex = data.find(JPG_FILE_TAIL)
+                    # 判断是否读取到 jpg 文件尾。
+                    # 如果读取到文件尾，则上面的循环会直接跳出，最后读取的那一段数据就没有被拼接进来，因此需要在这里添加
+                    if tailIndex >= 0:
+                        # 截取剩下的一段数据
+                        lastData: bytes = data[:tailIndex]
+                        # 拼接剩下的一段数据以及 jpg 文件尾到数据中
+                        jpgData += lastData + JPG_FILE_TAIL
+                        # 把指针向后移动
+                        pointer += len(lastData)
                     jpgDataList.append(jpgData)
                 else:
-                    index += 1
+                    # 如果没找到：往后查找
+                    pointer += BUFFER_SIZE
         return jpgDataList
 
     def __saveAllJpgFiles(self, rvfFile: str, jpgDataList: List[bytes]) -> None:

@@ -114,7 +114,7 @@ class RvfExtractHelper(object):
             finalRvfFile: str = re.sub(r"[\\/:*?<>|]", "_", rvfFile).strip()
             # 替换尾部多余的 _ 和空格
             finalRvfFile = re.sub(r"[ _]+$", "", finalRvfFile)
-            fullRvfFile: str = "%s/%s.rvf" % (rvfDir, finalRvfFile)
+            fullRvfFile: str = "%s/%s" % (rvfDir, finalRvfFile)
             self.__writeFile(fullRvfFile, rvfData)
         logging.info("DONE!")
 
@@ -129,14 +129,14 @@ class RvfExtractHelper(object):
         if dbConnection != None:
             dbConnection.close()
 
-    def __extractRecord(self, record: Any) -> Tuple[str, bytes]:
+    def __extractRecord(self, record: Tuple[int, bytes, str]) -> Tuple[str, bytes]:
         """- 解析记录，生成文件名和文件内容。
 
         - param
             - `record` 记录
         """
         id: int = record[0]
-        data: Any = record[1]
+        data: bytes = record[1]
         title: str = record[2]
         rvfFile: str = "%s-%s.rvf" % (id, title)
         rvfData: bytes = zlib.decompress(data)
