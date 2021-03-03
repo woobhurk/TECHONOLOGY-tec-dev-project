@@ -3,7 +3,6 @@
 
 import sys
 import os
-import re
 import logging
 from typing import *
 from FileUtils import FileUtils
