@@ -53,7 +53,7 @@ class JpgExtractHelper(object):
             if self.isRvfTextFile(rvfFile):
                 jpgDataList = self.__readJpgTextData(rvfFile)
             else:
-                jpgDataList = self.__readJpgBinaryData2(rvfFile)
+                jpgDataList = self.__readJpgBinaryData(rvfFile)
             self.__saveAllJpgFiles(rvfFile, jpgDataList)
         logging.info("DONE!")
 
@@ -86,7 +86,7 @@ class JpgExtractHelper(object):
                 index += 1
         return jpgDataList
 
-    def __readJpgBinaryData2(self, rvfFile: str) -> List[bytes]:
+    def __readJpgBinaryData(self, rvfFile: str) -> List[bytes]:
         """- 从二进制类型 rvf 文件中提取 jpg 数据。
 
         - param

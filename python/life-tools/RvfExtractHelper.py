@@ -108,7 +108,7 @@ class RvfExtractHelper(object):
             - `dbCursor` 数据库游标
         """
         for record in dbCursor:
-            logging.info("Saving row %s %s..." % (record[0], record[2]))
+            logging.info("Saving row id = %s, title = %s..." % (record[0], record[2]))
             rvfFile, rvfData = self.__extractRecord(record)
             # 替换掉不合法文件名的字符
             finalRvfFile: str = re.sub(r"[\\/:*?<>|]", "_", rvfFile).strip()
