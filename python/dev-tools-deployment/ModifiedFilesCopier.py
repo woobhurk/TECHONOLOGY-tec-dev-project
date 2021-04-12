@@ -68,7 +68,7 @@ DEF_RESOURCES_PREFIX: str = 'resources'
 DEF_SRC_PREFIX: str = ''
 
 
-class MainClass():
+class Main():
     """主类
     """
     def __init__(self) -> None:
@@ -589,8 +589,8 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
     if len(sys.argv) >= 2:
-        MainClass().main(sys.argv[1])
+        Main().main(sys.argv[1])
     else:
-        MainClass().main()
+        Main().main()
 
-    input('#### Finished.')
+    input('#### DONE!')

@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from fake_useragent import UserAgentError
 
-from com.tyfanch.project01_mzituscraper.webpageutils import WebPageUtils
+from com.tyfanchz.meizitu.WebPageUtils import WebPageUtils
 
 
 class MzituScraper:

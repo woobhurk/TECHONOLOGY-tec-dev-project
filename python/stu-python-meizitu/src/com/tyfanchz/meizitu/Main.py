@@ -1,4 +1,4 @@
-from com.tyfanch.project01_mzituscraper.mzituscraper import MzituScraper
+from com.tyfanchz.meizitu.MzituScraper import MzituScraper
 
 
 def main():
