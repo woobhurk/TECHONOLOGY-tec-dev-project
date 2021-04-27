@@ -138,7 +138,7 @@ class RvfExtractHelper(object):
         id: int = record[0]
         data: bytes = record[1]
         title: str = record[2]
-        rvfFile: str = "%s-%s.rvf" % (id, title)
+        rvfFile: str = "%05d-%s.rvf" % (id, title)
         rvfData: bytes = zlib.decompress(data)
         return (rvfFile, rvfData)
 
