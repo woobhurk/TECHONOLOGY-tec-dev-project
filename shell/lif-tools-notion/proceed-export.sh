@@ -10,7 +10,10 @@ function renameDirAndFile() {
     # 3. And rename all the paths to new ones in a `while` loop.
     find "$DIR" -iname "*" | sort -r | while read -r NAME; do
         NEW_NAME="$(echo "$NAME" | sed -E -e "s/(.*) \w{32}(\..*)?/\1\2/")"
-        mv "$NAME" "$NEW_NAME"
+        if [[ "$NAME" != "$NEW_NAME" ]]; then
+            echo "RENAME: $NAME -> $NEW_NAME"
+            mv "$NAME" "$NEW_NAME"
+        fi
     done
     echo
 }
@@ -21,8 +24,9 @@ function removeTitle() {
     DIR="$1"
     # Remove title of all files.
     find "$DIR" -iname "*" -type f | while read -r FILE; do
+        echo "PROCEED: $FILE"
         # Read next line, and replace line which starts with "#".
-        sed -E "N; /^#.*\n/d" "$FILE"
+        sed -Ei "N; /^#.*\n/d" "$FILE"
         # Append new line to end of file.
         echo "" >> "$FILE"
     done
