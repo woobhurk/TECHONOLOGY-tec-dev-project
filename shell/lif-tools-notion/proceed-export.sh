@@ -36,7 +36,7 @@ function main() {
     fi
     renameDirAndFile "$DIR"
     removeTitle "$DIR"
-    echo DONE!
+    echo ALL DONE!
 }
 
 main "$1"
