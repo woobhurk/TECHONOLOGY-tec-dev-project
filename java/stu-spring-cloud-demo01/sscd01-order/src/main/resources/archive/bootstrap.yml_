@@ -15,6 +15,6 @@ spring:
     # 引入其他配置文件，注意配置文件名需要为 application-xxx.yml，
     # 并且在下面的列表中不需要写 application- 前缀。
     include:
-      - consul-base
+      - base
       - consul-dev
       - datasource-dev

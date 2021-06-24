@@ -1,4 +1,4 @@
-# Spring 配置
+
 spring:
   cloud:
     # Consul 配置
@@ -28,3 +28,40 @@ spring:
         profile-separator: "-"
         # 数据后缀名，即 key 的后缀
         data-key: data
+
+  # 消息配置
+  messages:
+    encoding: utf-8
+
+  # Jackson 配置
+  jackson:
+    date-format: "yyyy-MM-dd HH:mm:ss"
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
+      fail-on-empty-beans: false
+    deserialization:
+      fail-on-ignored-properties: false
+      fail-on-unknown-properties: false
+
+# Feign 配置
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 20000
+        read-timeout: 20000
+
+# 日志配置
+logging:
+  level:
+    # 设置默认阈值为 debug
+    root: debug
+    # 关闭下面冗余的日志
+    org.apache.http: off
+    org.apache.commons: off
+    org.eclipse.jetty: off
+    io.lettuce: off
+    io.netty: off
+    reactor.netty: off
+    sun.rmi: off

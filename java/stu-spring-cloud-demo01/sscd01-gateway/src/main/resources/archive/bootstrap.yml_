@@ -15,7 +15,7 @@ spring:
     # \u5F15\u5165\u5176\u4ED6\u914D\u7F6E\u6587\u4EF6\uFF0C\u6CE8\u610F\u914D\u7F6E\u6587\u4EF6\u540D\u9700\u8981\u4E3A application-xxx.yml\uFF0C
     # \u5E76\u4E14\u5728\u4E0B\u9762\u7684\u5217\u8868\u4E2D\u4E0D\u9700\u8981\u5199 application- \u524D\u7F00\u3002
     include:
-      - consul-base
+      - base
       - consul-dev
       #- datasource-dev
 

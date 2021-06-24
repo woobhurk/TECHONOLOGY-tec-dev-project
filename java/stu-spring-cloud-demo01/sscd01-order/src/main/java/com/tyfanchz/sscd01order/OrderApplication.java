@@ -1,4 +1,4 @@
-package com.tyfanchz.sscd01order.modules;
+package com.tyfanchz.sscd01order;
 
 import com.tyfanchz.sscd01common.annotation.cloud.EnableCloudApp;
 import lombok.extern.slf4j.Slf4j;
