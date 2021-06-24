@@ -1,0 +1,30 @@
+# Spring 配置
+spring:
+  cloud:
+    # Consul 配置
+    consul:
+      # 注册中心
+      discovery:
+        service-name: ${spring.application.name}
+        register-health-check: true
+        # 这是 Consul 用于健康检查的接口，需要自己写一个
+        health-check-path: ${server.servlet.context-path}/consul/checkHealth
+        health-check-interval: 10s
+
+      # 配置中心
+      # 创建以下配置后，需要在 Consul 的 Key/value Store 里面创建相应的配置，
+      # 例如下面指定了文件夹为 sscd01，配置文件名和环境名的分隔符为“-”，
+      # 则需要在 Key/value Store 里面创建一个配置：
+      # key 为 sscd01/sscd01-gateway-dev/data
+      # value 为配置。
+      # key 名称后面的 /data 是必须有的，如果不想用 /data，则可以在下面配置 data-key 属性
+      config:
+        enabled: true
+        format: yaml
+        # 配置所在的文件夹，默认为 config
+        prefixes:
+          - sscd01
+        # profile 的后缀“dev”和名称的分隔符
+        profile-separator: "-"
+        # 数据后缀名，即 key 的后缀
+        data-key: data

@@ -1,0 +1,7 @@
+# Spring 配置
+spring:
+  cloud:
+    # Consul 配置
+    consul:
+      host: localhost
+      port: 8500

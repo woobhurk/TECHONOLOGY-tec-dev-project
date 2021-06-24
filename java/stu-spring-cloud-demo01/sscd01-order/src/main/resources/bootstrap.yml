@@ -1,15 +1,15 @@
 # 服务配置
 server:
-  port: 44001
+  port: 44002
   servlet:
-    context-path: /sscd01-user
+    context-path: /sscd01-order
   tomcat:
     uri-encoding: utf-8
 
 # Spring 配置
 spring:
   application:
-    name: sscd01-user
+    name: sscd01-order
   profiles:
     active: dev
     # 引入其他配置文件，注意配置文件名需要为 application-xxx.yml，

@@ -1,17 +1,4 @@
-# 数据库配置
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/stu-spring-cloud-demo01?useUnicode=true&characterEncoding=utf8
-    username: root
-    password: root
-
-# 日志配置
-logging:
-  level:
-    # 关闭下面冗余的日志
-    #org.springframework.boot: off
-    org.apache.http: off
-    org.apache.commons: off
-    org.eclipse.jetty: off
-    io.lettuce: off
-    io.netty: off
+  profiles:
+    include:
+      - logging

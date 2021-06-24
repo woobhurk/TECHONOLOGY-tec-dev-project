@@ -7,6 +7,8 @@
     <modules>
         <module>sscd01-gateway</module>
         <module>sscd01-user</module>
+        <module>sscd01-order</module>
+        <module>sscd01-common</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -87,7 +89,6 @@
             <artifactId>reactor-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>

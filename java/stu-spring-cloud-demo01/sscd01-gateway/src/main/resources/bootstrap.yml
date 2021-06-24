@@ -12,35 +12,14 @@ spring:
     name: sscd01-gateway
   profiles:
     active: dev
+    # \u5F15\u5165\u5176\u4ED6\u914D\u7F6E\u6587\u4EF6\uFF0C\u6CE8\u610F\u914D\u7F6E\u6587\u4EF6\u540D\u9700\u8981\u4E3A application-xxx.yml\uFF0C
+    # \u5E76\u4E14\u5728\u4E0B\u9762\u7684\u5217\u8868\u4E2D\u4E0D\u9700\u8981\u5199 application- \u524D\u7F00\u3002
+    include:
+      - consul-base
+      - consul-dev
+      #- datasource-dev
 
   cloud:
-    # Consul \u914D\u7F6E
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        service-name: ${spring.application.name}
-        register-health-check: true
-        # \u8FD9\u662F Consul \u7528\u4E8E\u5065\u5EB7\u68C0\u67E5\u7684\u63A5\u53E3\uFF0C\u9700\u8981\u81EA\u5DF1\u5199\u4E00\u4E2A
-        health-check-path: ${server.servlet.context-path}/consul/checkHealth
-        health-check-interval: 10s
-      # \u521B\u5EFA\u4EE5\u4E0B\u914D\u7F6E\u540E\uFF0C\u9700\u8981\u5728 Consul \u7684 Key/value Store \u91CC\u9762\u521B\u5EFA\u76F8\u5E94\u7684\u914D\u7F6E\uFF0C
-      # \u4F8B\u5982\u4E0B\u9762\u6307\u5B9A\u4E86\u6587\u4EF6\u5939\u4E3A sscd01\uFF0C\u914D\u7F6E\u6587\u4EF6\u540D\u548C\u73AF\u5883\u540D\u7684\u5206\u9694\u7B26\u4E3A\u201C-\u201D\uFF0C
-      # \u5219\u9700\u8981\u5728 Key/value Store \u91CC\u9762\u521B\u5EFA\u4E00\u4E2A\u914D\u7F6E\uFF1A
-      # key \u4E3A sscd01/sscd01-gateway-dev/data
-      # value \u4E3A\u914D\u7F6E\u3002
-      # key \u540D\u79F0\u540E\u9762\u7684 /data \u662F\u5FC5\u987B\u6709\u7684\uFF0C\u5982\u679C\u4E0D\u60F3\u7528 /data\uFF0C\u5219\u53EF\u4EE5\u5728\u4E0B\u9762\u914D\u7F6E data-key \u5C5E\u6027
-      config:
-        enabled: true
-        format: yaml
-        # \u914D\u7F6E\u6240\u5728\u7684\u6587\u4EF6\u5939\uFF0C\u9ED8\u8BA4\u4E3A config
-        prefixes:
-          - sscd01
-        # profile \u7684\u540E\u7F00\u201Cdev\u201D\u548C\u540D\u79F0\u7684\u5206\u9694\u7B26
-        profile-separator: "-"
-        # \u6570\u636E\u540E\u7F00\u540D\uFF0C\u5373 key \u7684\u540E\u7F00
-        data-key: data
-
     # \u7F51\u5173\u914D\u7F6E
     gateway:
       enabled: true
@@ -49,3 +28,7 @@ spring:
           uri: lb://sscd01-user
           predicates:
             - Path=/sscd01-user/**
+        - id: sscd01-order
+          uri: lb://sscd01-order
+          predicates:
+            - Path=/sscd01-order/**

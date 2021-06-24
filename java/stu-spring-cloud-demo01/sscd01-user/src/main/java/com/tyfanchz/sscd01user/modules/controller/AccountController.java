@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2021-06-23
  */
 @RestController
-@RequestMapping("/sscd01-user/account")
+@RequestMapping("${server.servlet.context-path}/account")
 @Slf4j
 public class AccountController {
     @GetMapping("/hello")

@@ -12,6 +12,12 @@
     <artifactId>sscd01-gateway</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.tyfanchz</groupId>
+            <artifactId>sscd01-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!--网关相关依赖-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
