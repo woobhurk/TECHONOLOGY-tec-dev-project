@@ -12,6 +12,7 @@ spring:
     name: sscd01-user
   profiles:
     active: dev
+
   cloud:
     # Consul 配置
     consul:
@@ -21,7 +22,7 @@ spring:
         service-name: ${spring.application.name}
         register-health-check: true
         # 这是 Consul 用于健康检查的接口，需要自己写一个
-        health-check-path: /consul/checkHealth
+        health-check-path: ${server.servlet.context-path}/consul/checkHealth
         health-check-interval: 10s
       # 创建以下配置后，需要在 Consul 的 Key/value Store 里面创建相应的配置，
       # 例如下面指定了文件夹为 sscd01，配置文件名和环境名的分隔符为“-”，

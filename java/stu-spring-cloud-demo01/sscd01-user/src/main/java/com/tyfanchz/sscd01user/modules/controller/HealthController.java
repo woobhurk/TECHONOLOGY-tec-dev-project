@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2021-06-22
  */
 @RestController
-@RequestMapping("/consul")
+@RequestMapping("/sscd01-user/consul")
 @Slf4j
 public class HealthController {
     @GetMapping("/checkHealth")
