@@ -1,1 +1,8 @@
 /__lib__/
+target/
+build/
+out/
+.idea/
+*.iws
+*.iml
+*.ipr
