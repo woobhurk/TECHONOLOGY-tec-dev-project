@@ -1,6 +1,6 @@
-package com.tyfanchz.sscd01user;
+package com.tyfanchz.sscd01.user;
 
-import com.tyfanchz.sscd01common.annotation.cloud.EnableCloudApp;
+import com.tyfanchz.sscd01.common.annotation.cloud.EnableCloudApp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

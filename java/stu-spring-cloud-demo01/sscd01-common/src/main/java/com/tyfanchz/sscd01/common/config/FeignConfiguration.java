@@ -1,4 +1,4 @@
-package com.tyfanchz.sscd01common.config;
+package com.tyfanchz.sscd01.common.config;
 
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.ObjectProvider;

@@ -1,6 +1,6 @@
-package com.tyfanchz.sscd01order.modules.controller;
+package com.tyfanchz.sscd01.order.modules.controller;
 
-import com.tyfanchz.sscd01order.modules.remote.AccountClient;
+import com.tyfanchz.sscd01.order.modules.remote.AccountClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2021-06-24
  */
 @RestController
-@RequestMapping("${server.servlet.context-path}/order")
+@RequestMapping("/order")
 @Slf4j
 public class OrderController {
     @Autowired

@@ -1,4 +1,4 @@
-package com.tyfanchz.sscd01order.modules.remote;
+package com.tyfanchz.sscd01.order.modules.remote;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

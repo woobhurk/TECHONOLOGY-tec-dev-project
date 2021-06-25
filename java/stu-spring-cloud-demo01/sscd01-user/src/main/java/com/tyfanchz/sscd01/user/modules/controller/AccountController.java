@@ -1,4 +1,4 @@
-package com.tyfanchz.sscd01user.modules.controller;
+package com.tyfanchz.sscd01.user.modules.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2021-06-23
  */
 @RestController
-@RequestMapping("${server.servlet.context-path}/account")
+@RequestMapping("/account")
 @Slf4j
 public class AccountController {
     @GetMapping("/hello")

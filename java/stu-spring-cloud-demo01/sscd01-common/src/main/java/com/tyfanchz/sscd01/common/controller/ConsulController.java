@@ -1,4 +1,4 @@
-package com.tyfanchz.sscd01common.controller;
+package com.tyfanchz.sscd01.common.controller;
 
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2021-06-24
  */
 @RestController
-@RequestMapping("${server.servlet.context-path}/consul")
+@RequestMapping("/consul")
 @Slf4j
 public class ConsulController {
     @Autowired

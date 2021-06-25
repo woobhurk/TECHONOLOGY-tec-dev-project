@@ -1,4 +1,4 @@
-package com.tyfanchz.sscd01common.utils;
+package com.tyfanchz.sscd01.common.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;

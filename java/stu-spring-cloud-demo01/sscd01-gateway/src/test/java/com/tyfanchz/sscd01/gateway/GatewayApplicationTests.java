@@ -1,4 +1,4 @@
-package com.tyfanchz.sscd01gateway;
+package com.tyfanchz.sscd01.gateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

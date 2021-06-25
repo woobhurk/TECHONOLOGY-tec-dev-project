@@ -1,4 +1,4 @@
-package com.tyfanchz.sscd01common.annotation.cloud;
+package com.tyfanchz.sscd01.common.annotation.cloud;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
