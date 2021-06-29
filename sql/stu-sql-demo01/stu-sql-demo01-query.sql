@@ -68,8 +68,43 @@ left join teacher_salary ts on ts.teacher_id = t.id
 where ts.salary = (select max(salary) from teacher_salary);
 
 -- 查询每个部门中薪水最高的老师的信息以及所在的部门、薪水
-select t.id, t.name `教师`, d.name `部门`, max(ts.salary) `薪水`
-from teacher t
-left join department d on d.id = t.department_id
-left join teacher_salary ts on ts.teacher_id = t.id
-group by d.id;
+select t.id, t.name `教师`, tmp.dname `部门`, tmp.salary `薪水`
+from teacher t, (
+    -- 查询出每个部门的最高工资
+    select d1.id did, d1.name dname, max(ts1.salary) salary
+    from teacher t1
+    left join department d1 on d1.id = t1.department_id
+    left join teacher_salary ts1 on ts1.teacher_id = t1.id
+    group by d1.id
+) tmp, (
+    -- 关联查询出教师的工资
+    select ts1.salary, ts1.teacher_id
+    from teacher_salary ts1
+) ts
+-- 过滤出当前教师薪水
+where t.id = ts.teacher_id
+    -- 过滤出薪水为最高薪水的教师
+    and ts.salary = tmp.salary
+    -- 过滤出当前部门最高薪水的教师
+    and t.department_id = tmp.did;
+
+-- ##########
+-- 临时表查询
+-- 查询工资高于部门平均工资的教师
+select t.id, t.name `教师`, ts.salary `薪水`, tmp.department_name `部门`
+from teacher t, (
+    -- 查询出部门的平均工资来
+    select d1.id department_id, d1.name department_name, avg(ts1.salary) average
+    from teacher t1
+    left join teacher_salary ts1 on ts1.teacher_id = t1.id
+    left join department d1 on d1.id = t1.department_id
+    group by d1.id
+) tmp, (
+    -- 查询出教师的工资
+    -- 这里不能使用 left join 语句，因为 select .. from 后面跟了多张表
+    select ts.salary, ts.teacher_id
+    from teacher_salary ts
+) ts
+where t.id = ts.teacher_id
+    and t.department_id = tmp.department_id
+    and ts.salary >= tmp.average;
