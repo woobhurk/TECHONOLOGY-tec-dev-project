@@ -6,6 +6,7 @@ import os
 import re
 import subprocess
 import logging
+import img2pdf
 from typing import *
 from FileUtils import FileUtils
 
@@ -20,9 +21,9 @@ class JpgToPdfHelper(object):
             basePath: str = self.readBasePath(argvBasePath)
             imageFileList: List[str] = self.buildImageFileList(basePath)
             imageGroupList: List[str] = self.buildImageGroupList(imageFileList)
-            groupAndFileList: List[Tuple[str, List[str]]] = \
-                self.pairImageGroupAndFiles(imageGroupList)
-            self.convertAll(groupAndFileList)
+            imageGroupDict: Dict[str, List[str]] = self.groupImageFile(imageGroupList)
+            self.convertToPdf(imageGroupDict)
+            logging.info("DONE!")
         except Exception as e:
             logging.exception("!!!!ERROR", e)
 
@@ -64,17 +65,15 @@ class JpgToPdfHelper(object):
         logging.info("Building image group list finished.")
         return list(imageGroupSet)
 
-    def pairImageGroupAndFiles(self, imageGroupList: List[str]) -> List[Tuple[str, List[str]]]:
-        """- 重新生成 jpg 文件列表。
-        - 此次是根据 jpg 分组名来生成，在后面添加后缀。
-        - 例如分组名为 group1，则生成的 jpg 文件列表为 group1_1.jpg group1_2.jpg ...
-        - 文件后缀从 1 开始，依次递增，如果根据组名添加后缀之后找不到该 jpg 文件，则说明该分组文件生成完毕。
+    def groupImageFile(self, imageGroupList: List[str]) -> Dict[str, List[str]]:
+        """- 根据 jpg 文件的名称进行分组。
+        - 假设每组 jpg 文件的命名格式为 group1_1.jpg、group1_2.jpg，则分组为 group1，最后生成的文件为 group1.pdf。
 
         - param
-            - `imageGroupList` jpg 文分组列表
-        - return 元组的列表，每个元组的内容为 (分组名, jpg 文件列表)
+            - `imageGroupList` jpg 文件分组
+        - return 生成的 jpg 文件的分组字典
         """
-        groupAndFileList: List[Tuple[str, List[str]]] = []
+        imageGroupDict: Dict[str, List[str]] = {}
         for imageGroup in imageGroupList:
             imageFileList: List[str] = []
             index: int = 1
@@ -85,27 +84,34 @@ class JpgToPdfHelper(object):
                 imageFileList.append(imageFile)
                 index += 1
                 imageFile = "%s_%s.jpg" % (imageGroup, index)
-            groupAndFileList.append((imageGroup, imageFileList))
-        logging.info("Pairing image group and files finished.")
-        return groupAndFileList
+            imageGroupDict[imageGroup] = imageFileList
+        logging.info("Grouping images finished.")
+        return imageGroupDict
 
-    def convertAll(self, groupAndFileList: List[Tuple[str, List[str]]]) -> None:
+    def convertToPdf(self, imageGroupDict: Dict[str, List[str]]) -> None:
         """- 根据分组转换所有的 jpg 为 pdf 文件。
 
         - param
-            - `groupAndFileList` 元组的列表，每个元组的内容为 (分组名, jpg 文件列表)
+            - `imageGroupDict` jpg 文件的分组字典，key 为分组名，value 为文件名列表
         """
         logging.info("Starting convertion...")
-        for groupAndFile in groupAndFileList:
-            # 分组名，用于生成 pdf 文件名
-            imageGroup: str = groupAndFile[0]
-            # 该分组下的所有 jpg 文件
-            imageFileList: List[str] = groupAndFile[1]
-            self.__convert(imageGroup, imageFileList)
-        logging.info("DONE!")
+        for (imageGroup, imageFileList) in imageGroupDict.items():
+            self.__convertByLibrary(imageGroup, imageFileList)
 
-    def __convert(self, imageGroup: str, imageFileList: List[str]) -> None:
-        """- 转换单组 jpg 为 pdf 文件。
+    def __convertByLibrary(self, imageGroup: str, imageFileList: List[str]) -> None:
+        """- 使用库转换单组 jpg 为 pdf 文件。
+
+        - param
+            - `imageGroup` 文件分组名
+            - `imageFileList` 分组下的 jpg 文件列表
+        """
+        pdfFile: str = "%s.pdf" % (imageGroup)
+        logging.info("Converting to %s..." % (pdfFile))
+        with open(pdfFile, 'wb') as f:
+            f.write(img2pdf.convert(imageFileList))
+
+    def __convertByCommand(self, imageGroup: str, imageFileList: List[str]) -> None:
+        """- 使用命令行转换单组 jpg 为 pdf 文件。
 
         - param
             - `imageGroup` 文件分组名
