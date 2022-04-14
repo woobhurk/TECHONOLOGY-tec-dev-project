@@ -1,0 +1,23 @@
+Bootstrap: docker
+From: openjdk:8
+
+%files
+# Copy all files in the context directory to /opt/
+{{CONTEXT_DIR}}/* /opt/
+
+%post
+# Initialize container
+TIMEZONE="Asia/Shanghai"
+ln -sf "/usr/share/zoneinfo/$TIMEZONE" "/etc/localtime"
+echo "$TIMEZONE" > "/etc/timezone"
+
+# Move all files in /opt/ to /data/project/
+APP_FILE="{{APP_FILE}}"
+APP_DIR="/data/project"
+mkdir -p "$APP_DIR/"
+mv -f "/opt"/* "$APP_DIR/"
+mv "$APP_DIR/$APP_FILE" "$APP_DIR/app.jar"
+
+%startscript
+# Specify entrypoint of container
+/bin/bash "/data/project/sgl-project-entrypoint.sh"
