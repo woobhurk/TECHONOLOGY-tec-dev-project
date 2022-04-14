@@ -1,41 +1,41 @@
 #!/usr/bin/env bash
 
-SED_SCRIPT="s/(\w)iong( |\t)/\1s\2/g;
-s/(\w)uang( |\t)/\1l\2/g;
-s/(\w)iang( |\t)/\1l\2/g;
-s/(\w)uan( |\t)/\1r\2/g;
-s/(\w)ong( |\t)/\1s\2/g;
-s/(\w)eng( |\t)/\1g\2/g;
-s/(\w)ang( |\t)/\1h\2/g;
-s/(\w)uai( |\t)/\1k\2/g;
-s/(\w)ing( |\t)/\1k\2/g;
-s/(\w)iao( |\t)/\1n\2/g;
-s/(\w)ian( |\t)/\1m\2/g;
-s/(\w)iu( |\t)/\1q\2/g;
-s/(\w)ei( |\t)/\1w\2/g;
-s/(\w)ue( |\t)/\1t\2/g;
-s/(\w)ve( |\t)/\1t\2/g;
-s/(\w)un( |\t)/\1y\2/g;
-s/(\w)uo( |\t)/\1o\2/g;
-s/(\w)ie( |\t)/\1p\2/g;
-s/(\w)ai( |\t)/\1d\2/g;
-s/(\w)en( |\t)/\1f\2/g;
-s/(\w)an( |\t)/\1j\2/g;
-s/(\w)ou( |\t)/\1z\2/g;
-s/(\w)ua( |\t)/\1x\2/g;
-s/(\w)ia( |\t)/\1x\2/g;
-s/(\w)ao( |\t)/\1c\2/g;
-s/(\w)ui( |\t)/\1v\2/g;
-s/(\w)in( |\t)/\1b\2/g;
-s/( |\t)sh(\w)/\1u\2/g;
-s/( |\t)ch(\w)/\1i\2/g;
-s/( |\t)zh(\w)/\1v\2/g;
-s/( |\t)a( |\t)/\1aa\2/g;
-s/( |\t)o( |\t)/\1oo\2/g;
-s/( |\t)e( |\t)/\1ee\2/g;
-s/( |\t)ang( |\t)/\1ah\2/g;
-s/( |\t)eng( |\t)/\1eg\2/g;
-s/( |\t)hng( |\t)/\1hg\2/g;
-s/( |\t)(\w)( |\t)/\1\2\2\3/g"
+SED_SCRIPT="s/(\w)iong\b/\1s/g;
+s/(\w)uang\b/\1l/g;
+s/(\w)iang\b/\1l/g;
+s/(\w)uan\b/\1r/g;
+s/(\w)ong\b/\1s/g;
+s/(\w)eng\b/\1g/g;
+s/(\w)ang\b/\1h/g;
+s/(\w)uai\b/\1k/g;
+s/(\w)ing\b/\1k/g;
+s/(\w)iao\b/\1n/g;
+s/(\w)ian\b/\1m/g;
+s/(\w)iu\b/\1q/g;
+s/(\w)ei\b/\1w/g;
+s/(\w)ue\b/\1t/g;
+s/(\w)ve\b/\1t/g;
+s/(\w)un\b/\1y/g;
+s/(\w)uo\b/\1o/g;
+s/(\w)ie\b/\1p/g;
+s/(\w)ai\b/\1d/g;
+s/(\w)en\b/\1f/g;
+s/(\w)an\b/\1j/g;
+s/(\w)ou\b/z\1/g;
+s/(\w)ua\b/x\1/g;
+s/(\w)ia\b/x\1/g;
+s/(\w)ao\b/c\1/g;
+s/(\w)ui\b/v\1/g;
+s/(\w)in\b/b\1/g;
+s/\bsh(\w)/u\1/g;
+s/\bch(\w)/i\1/g;
+s/\bzh(\w)/v\1/g;
+s/\ba\b/aa/g;
+s/\bo\b/oo/g;
+s/\be\b/ee/g;
+s/\bang\b/ah/g;
+s/\beng\b/eg/g;
+s/\bhng\b/hg/g;
+s/\b(\w)\b/\1\1/g"
 
-sed -Ei_ "$SED_SCRIPT" ./*
+sed -i_ -E "$SED_SCRIPT" "$@"
