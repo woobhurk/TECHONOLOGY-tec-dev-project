@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-SED_SCRIPT="s/(\w)iong\b/\1s/g;
+SED_SCRIPT="
+s/(\w)iong\b/\1s/g;
 s/(\w)uang\b/\1l/g;
 s/(\w)iang\b/\1l/g;
 s/(\w)uan\b/\1r/g;
@@ -21,12 +22,12 @@ s/(\w)ie\b/\1p/g;
 s/(\w)ai\b/\1d/g;
 s/(\w)en\b/\1f/g;
 s/(\w)an\b/\1j/g;
-s/(\w)ou\b/z\1/g;
-s/(\w)ua\b/x\1/g;
-s/(\w)ia\b/x\1/g;
-s/(\w)ao\b/c\1/g;
-s/(\w)ui\b/v\1/g;
-s/(\w)in\b/b\1/g;
+s/(\w)ou\b/\1z/g;
+s/(\w)ua\b/\1x/g;
+s/(\w)ia\b/\1x/g;
+s/(\w)ao\b/\1c/g;
+s/(\w)ui\b/\1v/g;
+s/(\w)in\b/\1b/g;
 s/\bsh(\w)/u\1/g;
 s/\bch(\w)/i\1/g;
 s/\bzh(\w)/v\1/g;
@@ -35,7 +36,6 @@ s/\bo\b/oo/g;
 s/\be\b/ee/g;
 s/\bang\b/ah/g;
 s/\beng\b/eg/g;
-s/\bhng\b/hg/g;
-s/\b(\w)\b/\1\1/g"
+s/\bhng\b/hg/g"
 
 sed -i_ -E "$SED_SCRIPT" "$@"
