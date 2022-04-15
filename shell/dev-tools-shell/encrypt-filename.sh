@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 function processFilename() {
-    BASE_DIR="$1"
-    MODE="$2"
-    find "$BASE_DIR" -type f | while read -r FILE_PATH; do
+    MODE="$1"
+    BASE_DIR="$2"
+    find "$BASE_DIR/" -type f | while read -r FILE_PATH; do
         DIR="$(dirname "$FILE_PATH")"
         FILE="$(basename "$FILE_PATH")"
         if [[ "$MODE" == "d" ]]; then
@@ -18,10 +18,10 @@ function processFilename() {
 }
 
 function main() {
-    BASE_DIR="${1:-"$(pwd)"}"
-    MODE="${2:-e}"
-    echo "Base dir: $BASE_DIR"
+    MODE="${1:-e}"
+    BASE_DIR="${2:-"$(pwd)"}"
     echo "Mode: $MODE"
+    echo "Base dir: $BASE_DIR"
     processFilename "$BASE_DIR" "$MODE"
 }
 
