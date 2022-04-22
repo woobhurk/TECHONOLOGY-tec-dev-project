@@ -17,10 +17,10 @@ set -e
 BASE_DIR="$(dirname "$0")"
 # App name, or image name
 APP_NAME="${1:-app}"
-# Port of app image
+# Exposed port of image
 APP_PORT="${2:-8080}"
-# Port of app ocntainer
-CONTAINER_PORT="${3:-8080}"
+# Mapped ports of host
+HOST_PORTS="${3:-8080}"
 # Path of app file
 APP_FILE="${4:-app.jar}"
 # Directory of app file
@@ -35,7 +35,7 @@ echo Debug information:
 echo "Script directory: $BASE_DIR/"
 echo "App name: $APP_NAME"
 echo "App port: $APP_PORT"
-echo "Container port: $CONTAINER_PORT"
+echo "Host ports: $HOST_PORTS"
 echo "App file path: $APP_FILE"
 echo "App file directory: $APP_DIR/"
 echo "Singularity defination file path: $SGL_DEF_FILE"
@@ -64,9 +64,9 @@ singularity build --force "$SGL_SIF_FILE" "$SGL_DEF_FILE"
 echo
 
 echo ================================
-for PORT in $CONTAINER_PORT; do
+for PORT in $HOST_PORTS; do
     CONTAINER_NAME="$APP_NAME-$PORT"
-    echo "--------------------------------"
+    echo --------------------------------
     echo "Running container $CONTAINER_NAME..."
     singularity instance start \
         --net --network-args "portmap=$PORT:$APP_PORT/tcp" \
