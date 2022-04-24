@@ -38,8 +38,8 @@ echo "App port: $APP_PORT"
 echo "Host ports: $HOST_PORTS"
 echo "App file path: $APP_FILE"
 echo "App file directory: $APP_DIR/"
-echo "Singularity defination file path: $SGL_DEF_FILE"
-echo "Singularity SIF file path: $SGL_SIF_FILE"
+echo "Singularity def file path: $SGL_DEF_FILE"
+echo "Singularity sif file path: $SGL_SIF_FILE"
 echo
 
 echo ================================
