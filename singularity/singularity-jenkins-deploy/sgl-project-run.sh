@@ -60,7 +60,7 @@ echo
 
 echo ================================
 echo Building container...
-singularity build --force "$SGL_SIF_FILE" "$SGL_DEF_FILE"
+sudo singularity build --force "$SGL_SIF_FILE" "$SGL_DEF_FILE"
 echo
 
 echo ================================
@@ -68,7 +68,7 @@ for PORT in $HOST_PORTS; do
     CONTAINER_NAME="$APP_NAME-$PORT"
     echo --------------------------------
     echo "Running container $CONTAINER_NAME..."
-    singularity instance start \
+    sudo singularity instance start \
         --net --network-args "portmap=$PORT:$APP_PORT/tcp" \
         --bind "/data:/host-data" \
         "$SGL_SIF_FILE" "$CONTAINER_NAME"
@@ -76,6 +76,11 @@ for PORT in $HOST_PORTS; do
     #singularity run --bind "/data:/host/data" "$SGL_SIF_FILE" \
     #    /data/project/sgl-project-entrypoint.sh >> "$SGL_SIF_LOG_FILE" 2>&1 &
 done
+echo
+
+echo ================================
+echo Logs:
+sudo singularity instance list -l
 echo
 
 echo ================================
