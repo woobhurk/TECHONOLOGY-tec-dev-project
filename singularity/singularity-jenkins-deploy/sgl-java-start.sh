@@ -79,9 +79,12 @@ for PORT in $HOST_PORTS; do
         --net --network-args "portmap=$PORT:$PROJECT_PORT/tcp" \
         --bind "/data:/host-data" \
         "$SGL_SIF_FILE" "$CONTAINER_NAME"
-    #SGL_SIF_LOG_FILE="$SGL_SIF_FILE-$(date +%Y%m%d).out"
-    #singularity run --bind "/data:/host/data" "$SGL_SIF_FILE" \
-    #    /data/project/sgl-project-entrypoint.sh >> "$SGL_SIF_LOG_FILE" 2>&1 &
+    sudo singularity run \
+        --overlay "$SGL_OVERLAY_DIR/" \
+        --net --network-args "portmap=$PORT:$PROJECT_PORT/tcp" \
+        --bind "/data:/host-data" \
+        "$SGL_SIF_FILE" \
+        >> "$PROJECT_DIR/$PROJECT_FILE-$(date +%Y%m%d).out" &
     echo "Logs:"
     sudo singularity instance list -l | sed -n "/$CONTAINER_NAME/ p" | awk '{print $(NF)}'
 done
