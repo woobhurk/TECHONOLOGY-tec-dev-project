@@ -15,4 +15,5 @@
 
 # #############
 # DO NOT MODIFY
-java -jar /project/app.jar
+# Output logs to specified file
+java -jar "/project/app.jar" >> "$1"

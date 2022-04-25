@@ -29,8 +29,8 @@ PROJECT_DIR="$(dirname "$PROJECT_FILE")"
 SGL_DEF_FILE="$BASE_DIR/sgl-java-project-$PROJECT_NAME-$RANDOM.def"
 # Path of Singularity sif file
 SGL_SIF_FILE="$PROJECT_DIR/$PROJECT_NAME.sif"
-# Directory of container overlay
-SGL_OVERLAY_DIR="$PROJECT_DIR/$PROJECT_NAME-overlay"
+# Project log file. Get the absolute path of project, then add the prefix `/mnt`, which will be the path inside container
+PROJECT_LOG_FILE="/mnt$(cd "$PROJECT_DIR/" && pwd)/$PROJECT_NAME-$(date +%Y%m%d).out"
 
 echo ================================
 echo Debug information:
@@ -42,7 +42,7 @@ echo "Project file: $PROJECT_FILE"
 echo "Project directory: $PROJECT_DIR/"
 echo "Singularity def file path: $SGL_DEF_FILE"
 echo "Singularity sif file path: $SGL_SIF_FILE"
-echo "Singularity overlay directory: $SGL_OVERLAY_DIR/"
+echo "Project log file in container: $PROJECT_LOG_FILE"
 echo
 
 echo ================================
@@ -52,12 +52,13 @@ mkdir -p "$SGL_OVERLAY_DIR/"
 # copy entrypoint shell
 cp -f "$BASE_DIR/sgl-java-entrypoint.sh" "$PROJECT_DIR/"
 # Generate Singularity def file
-SGL_PROJECT_FILE="$(basename "$PROJECT_FILE")"
 # Make a copy of origional denfination file
 cp -f "$BASE_DIR/sgl-java-project.def" "$SGL_DEF_FILE"
 # Replace variables in def file
+SGL_PROJECT_FILE="$(basename "$PROJECT_FILE")"
 sed -i -E -e "s|\{\{PROJECT_FILE\}\}|$SGL_PROJECT_FILE|g" \
     -e "s|\{\{PROJECT_DIR\}\}|$PROJECT_DIR|g" \
+    -e "s|\{\{PROJECT_LOG_FILE\}\}|$PROJECT_LOG_FILE|g" \
     "$SGL_DEF_FILE"
 echo
 
@@ -75,16 +76,16 @@ for PORT in $HOST_PORTS; do
         && echo "Stopping running container $CONTAINER_NAME..." \
         && sudo singularity instance stop --force "$CONTAINER_NAME"
     sudo singularity instance start \
-        --overlay "$SGL_OVERLAY_DIR/" \
+        --writable-tmpfs \
         --net --network-args "portmap=$PORT:$PROJECT_PORT/tcp" \
-        --bind "/data:/host-data" \
+        --bind "/data:/mnt/data" \
         "$SGL_SIF_FILE" "$CONTAINER_NAME"
-    sudo singularity run \
-        --overlay "$SGL_OVERLAY_DIR/" \
-        --net --network-args "portmap=$PORT:$PROJECT_PORT/tcp" \
-        --bind "/data:/host-data" \
-        "$SGL_SIF_FILE" \
-        >> "$PROJECT_DIR/$PROJECT_FILE-$(date +%Y%m%d).out" &
+    #sudo singularity run \
+    #    --writable-tmpfs \
+    #    --net --network-args "portmap=$PORT:$PROJECT_PORT/tcp" \
+    #    --bind "/data:/mnt/data" \
+    #    "$SGL_SIF_FILE" \
+    #    >> "$PROJECT_DIR/$PROJECT_FILE-$(date +%Y%m%d).out" &
     echo "Logs:"
     sudo singularity instance list -l | sed -n "/$CONTAINER_NAME/ p" | awk '{print $(NF)}'
 done

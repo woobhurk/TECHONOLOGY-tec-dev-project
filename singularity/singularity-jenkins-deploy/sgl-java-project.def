@@ -20,9 +20,7 @@ mv -f "/opt"/* "$PROJECT_DIR/"
 mv "$PROJECT_DIR/$PROJECT_FILE" "$PROJECT_DIR/app.jar"
 
 %runscript
-# Set entrypoint of container
-/bin/bash "/project/sgl-java-entrypoint.sh"
+/bin/bash "/project/sgl-java-entrypoint.sh" "{{PROJECT_LOG_FILE}}"
 
 %startscript
-# Set entrypoint of container
-/bin/bash "/project/sgl-java-entrypoint.sh"
+/bin/bash "/project/sgl-java-entrypoint.sh" "{{PROJECT_LOG_FILE}}"
