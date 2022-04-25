@@ -15,4 +15,4 @@
 
 # #############
 # DO NOT MODIFY
-java -jar /data/project/app.jar
+java -jar /project/app.jar
