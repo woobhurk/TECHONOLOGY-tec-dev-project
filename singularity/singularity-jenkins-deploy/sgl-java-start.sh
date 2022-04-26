@@ -35,22 +35,23 @@ SGL_SIF_FILE="$PROJECT_DIR/$PROJECT_NAME.sif"
 # Path of project entrypoint script
 PROJECT_ENTRYPOINT="$BASE_DIR/sgl-java-entrypoint.sh"
 # Project options
-PROJECT_OPTION=""
+PROJECT_OPTION="${PROJECT_OPTION_MAP["$PROJECT_NAME"]}"
 # Project log file. Get the absolute path of project, then add the prefix `/mnt`, which will be the path inside container
 PROJECT_LOG_FILE="/mnt$(cd "$PROJECT_DIR/" && pwd)/$PROJECT_NAME-$(date +%Y%m%d).out"
 
 echo ================================
 echo Debug information:
 echo "Script directory: $BASE_DIR/"
-echo "Singularity def file path: $SGL_DEF_FILE"
-echo "Temporary Singularity def file path: $TMP_DEF_FILE"
-echo "Singularity sif file path: $SGL_SIF_FILE"
-echo "Project entrypoint script: $PROJECT_ENTRYPOINT"
 echo "Project name: $PROJECT_NAME"
 echo "Project port: $PROJECT_PORT"
 echo "Host ports: $HOST_PORTS"
 echo "Project file: $PROJECT_FILE"
 echo "Project directory: $PROJECT_DIR/"
+echo
+echo "Singularity def file path: $SGL_DEF_FILE"
+echo "Temporary Singularity def file path: $TMP_DEF_FILE"
+echo "Singularity sif file path: $SGL_SIF_FILE"
+echo "Project entrypoint script: $PROJECT_ENTRYPOINT"
 echo "Project log file in container: $PROJECT_LOG_FILE"
 echo
 
