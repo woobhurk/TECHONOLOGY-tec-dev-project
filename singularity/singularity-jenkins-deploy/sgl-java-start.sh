@@ -15,6 +15,17 @@ set -e
 
 # Directory of this script
 BASE_DIR="$(dirname "$0")"
+# Project name, or image name
+PROJECT_NAME="${1:-app}"
+# Exposed port of image
+PROJECT_PORT="${2:-8080}"
+# Mapped ports of host
+HOST_PORTS="${3:-18080}"
+# Path of project file
+PROJECT_FILE="${4:-app.jar}"
+# Directory of project file
+PROJECT_DIR="$(dirname "$PROJECT_FILE")"
+
 # Path of Singularity def file
 SGL_DEF_FILE="$BASE_DIR/sgl-java-image.def"
 # Path of temporary Singularity def file
@@ -23,18 +34,8 @@ TMP_DEF_FILE="$SGL_DEF_FILE-$RANDOM.def"
 SGL_SIF_FILE="$PROJECT_DIR/$PROJECT_NAME.sif"
 # Path of project entrypoint script
 PROJECT_ENTRYPOINT="$BASE_DIR/sgl-java-entrypoint.sh"
-# Project name, or image name
-PROJECT_NAME="${1:-app}"
-# Exposed port of image
-PROJECT_PORT="${2:-8080}"
-# Mapped ports of host
-HOST_PORTS="${3:-18080}"
 # Project options
 PROJECT_OPTION=""
-# Path of project file
-PROJECT_FILE="${4:-app.jar}"
-# Directory of project file
-PROJECT_DIR="$(dirname "$PROJECT_FILE")"
 # Project log file. Get the absolute path of project, then add the prefix `/mnt`, which will be the path inside container
 PROJECT_LOG_FILE="/mnt$(cd "$PROJECT_DIR/" && pwd)/$PROJECT_NAME-$(date +%Y%m%d).out"
 
