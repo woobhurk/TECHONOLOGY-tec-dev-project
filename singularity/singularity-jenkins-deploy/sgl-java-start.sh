@@ -15,6 +15,16 @@ set -e
 
 # Directory of this script
 BASE_DIR="$(dirname "$0")"
+# Path of Singularity def file
+SGL_DEF_FILE="$BASE_DIR/sgl-java-image.def"
+# Path of temporary Singularity def file
+TMP_DEF_FILE="$SGL_DEF_FILE-$RANDOM.def"
+# Path of Singularity sif file
+SGL_SIF_FILE="$PROJECT_DIR/$PROJECT_NAME.sif"
+# Path of project entrypoint script
+PROJECT_ENTRYPOINT="$BASE_DIR/sgl-java-entrypoint.sh"
+# Project options
+PROJECT_OPTION=""
 # Project name, or image name
 PROJECT_NAME="${1:-app}"
 # Exposed port of image
@@ -25,46 +35,43 @@ HOST_PORTS="${3:-18080}"
 PROJECT_FILE="${4:-app.jar}"
 # Directory of project file
 PROJECT_DIR="$(dirname "$PROJECT_FILE")"
-# Path of generated Singularity def file
-SGL_DEF_FILE="$BASE_DIR/sgl-java-project-$PROJECT_NAME-$RANDOM.def"
-# Path of Singularity sif file
-SGL_SIF_FILE="$PROJECT_DIR/$PROJECT_NAME.sif"
 # Project log file. Get the absolute path of project, then add the prefix `/mnt`, which will be the path inside container
 PROJECT_LOG_FILE="/mnt$(cd "$PROJECT_DIR/" && pwd)/$PROJECT_NAME-$(date +%Y%m%d).out"
 
 echo ================================
 echo Debug information:
 echo "Script directory: $BASE_DIR/"
+echo "Singularity def file path: $SGL_DEF_FILE"
+echo "Temporary Singularity def file path: $TMP_DEF_FILE"
+echo "Singularity sif file path: $SGL_SIF_FILE"
+echo "Project entrypoint script: $PROJECT_ENTRYPOINT"
 echo "Project name: $PROJECT_NAME"
 echo "Project port: $PROJECT_PORT"
 echo "Host ports: $HOST_PORTS"
 echo "Project file: $PROJECT_FILE"
 echo "Project directory: $PROJECT_DIR/"
-echo "Singularity def file path: $SGL_DEF_FILE"
-echo "Singularity sif file path: $SGL_SIF_FILE"
 echo "Project log file in container: $PROJECT_LOG_FILE"
 echo
 
 echo ================================
 echo Initializing...
-# Create overlay directory
-mkdir -p "$SGL_OVERLAY_DIR/"
-# copy entrypoint shell
-cp -f "$BASE_DIR/sgl-java-entrypoint.sh" "$PROJECT_DIR/"
+# Copy entrypoint script
+cp -f "$PROJECT_ENTRYPOINT" "$PROJECT_DIR/"
 # Generate Singularity def file
-# Make a copy of origional denfination file
-cp -f "$BASE_DIR/sgl-java-project.def" "$SGL_DEF_FILE"
+# Make a copy of origional def file
+cp -f "$SGL_DEF_FILE" "$TMP_DEF_FILE"
 # Replace variables in def file
 SGL_PROJECT_FILE="$(basename "$PROJECT_FILE")"
-sed -i -E -e "s|\{\{PROJECT_FILE\}\}|$SGL_PROJECT_FILE|g" \
+sed -i -E -e "s|\{\{PROJECT_OPTION\}\}|$PROJECT_OPTION|g" \
+    -e "s|\{\{PROJECT_FILE\}\}|$SGL_PROJECT_FILE|g" \
     -e "s|\{\{PROJECT_DIR\}\}|$PROJECT_DIR|g" \
     -e "s|\{\{PROJECT_LOG_FILE\}\}|$PROJECT_LOG_FILE|g" \
-    "$SGL_DEF_FILE"
+    "$TMP_DEF_FILE"
 echo
 
 echo ================================
 echo Building container...
-sudo singularity build --force "$SGL_SIF_FILE" "$SGL_DEF_FILE"
+sudo singularity build --force "$SGL_SIF_FILE" "$TMP_DEF_FILE"
 echo
 
 echo ================================
@@ -86,14 +93,15 @@ for PORT in $HOST_PORTS; do
     #    --bind "/data:/mnt/data" \
     #    "$SGL_SIF_FILE" \
     #    >> "$PROJECT_DIR/$PROJECT_FILE-$(date +%Y%m%d).out" &
-    echo "Logs:"
-    sudo singularity instance list -l | sed -n "/$CONTAINER_NAME/ p" | awk '{print $(NF)}'
+    echo Container Logs:
+    echo "$PROJECT_LOG_FILE"
+    #sudo singularity instance list -l | sed -n "/$CONTAINER_NAME/ p" | awk '{print $(NF)}'
 done
 echo
 
 echo ================================
 echo Deleting temporary files...
-rm -f "$SGL_DEF_FILE"
+rm -f "$TMP_DEF_FILE"
 echo
 
 echo ALL DONE!

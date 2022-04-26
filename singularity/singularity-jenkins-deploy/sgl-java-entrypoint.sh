@@ -16,4 +16,11 @@
 # #############
 # DO NOT MODIFY
 # Output logs to specified file
-java -jar "/project/app.jar" >> "$1"
+PROJECT_OPTION="$1"
+PROJECT_LOG_FILE="$2"
+{
+    echo ================================
+    echo "Project option: $PROJECT_OPTION"
+    echo "Project log file: $PROJECT_LOG_FILE"
+    java $PROJECT_OPTION -jar "/project/app.jar"
+} &>> "$PROJECT_LOG_FILE"

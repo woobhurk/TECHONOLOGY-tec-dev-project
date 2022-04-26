@@ -20,7 +20,7 @@ mv -f "/opt"/* "$PROJECT_DIR/"
 mv "$PROJECT_DIR/$PROJECT_FILE" "$PROJECT_DIR/app.jar"
 
 %runscript
-/bin/bash "/project/sgl-java-entrypoint.sh" "{{PROJECT_LOG_FILE}}"
+/bin/bash "/project/sgl-java-entrypoint.sh" "{{PROJECT_OPTION}}" "{{PROJECT_LOG_FILE}}"
 
 %startscript
-/bin/bash "/project/sgl-java-entrypoint.sh" "{{PROJECT_LOG_FILE}}"
+/bin/bash "/project/sgl-java-entrypoint.sh" "{{PROJECT_OPTION}}" "{{PROJECT_LOG_FILE}}"

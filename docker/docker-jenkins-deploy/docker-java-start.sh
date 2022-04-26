@@ -15,6 +15,10 @@ set -e
 
 # Directory of this script
 BASE_DIR="$(dirname "$0")"
+# Path of Dockerfile
+DOCKERFILE="$BASE_DIR/docker-java-image.dockerfile"
+# Path of project entrypoint script
+PROJECT_ENTRYPONT="$BASE_DIR/docker-java-entrypoint.sh"
 # Project name, or image name
 PROJECT_NAME="${1:-app}"
 # Exposed port of image
@@ -29,6 +33,8 @@ PROJECT_DIR="$(dirname "$PROJECT_FILE")"
 echo ================================
 echo Debug information:
 echo "Script directory: $BASE_DIR/"
+echo "Dockerfile: $DOCKERFILE"
+echo "Project entrypoint script: $PROJECT_ENTRYPONT"
 echo "Project name: $PROJECT_NAME"
 echo "Project port: $PROJECT_PORT"
 echo "Host ports: $HOST_PORTS"
@@ -37,8 +43,8 @@ echo "Project directory: $PROJECT_DIR/"
 echo
 
 echo ================================
-echo Copying needed files...
-cp -f "$BASE_DIR/docker-java-entrypoint.sh" "$PROJECT_DIR/"
+echo Initializing...
+cp -f "$PROJECT_ENTRYPONT" "$PROJECT_DIR/"
 echo
 
 echo ================================
@@ -47,7 +53,7 @@ echo "Building docker image with name $PROJECT_NAME..."
 # -t: Image name
 # --build-arg: Arguments to be used in Dockerfile
 DOCKER_PROJECT_FILE="$(basename "$PROJECT_FILE")"
-docker build -f "$BASE_DIR/docker-java-project.dockerfile" \
+docker build -f "$DOCKERFILE" \
     -t "$PROJECT_NAME" \
     --build-arg PROJECT_FILE="$DOCKER_PROJECT_FILE" \
     "$PROJECT_DIR/"
