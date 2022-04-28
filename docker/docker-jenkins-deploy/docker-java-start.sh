@@ -15,10 +15,6 @@ set -e
 
 # Directory of this script
 BASE_DIR="$(dirname "$0")"
-# Path of Dockerfile
-DOCKERFILE="$BASE_DIR/docker-java-image.dockerfile"
-# Path of project entrypoint script
-PROJECT_ENTRYPONT="$BASE_DIR/docker-java-entrypoint.sh"
 # Project name, or image name
 PROJECT_NAME="${1:-app}"
 # Exposed port of image
@@ -30,16 +26,22 @@ PROJECT_FILE="${4:-app.jar}"
 # Directory of project file
 PROJECT_DIR="$(dirname "$PROJECT_FILE")"
 
+# Path of Dockerfile
+DOCKERFILE="$BASE_DIR/docker-java-image.dockerfile"
+# Path of project entrypoint script
+PROJECT_ENTRYPONT="$BASE_DIR/docker-java-entrypoint.sh"
+
 echo ================================
 echo Debug information:
 echo "Script directory: $BASE_DIR/"
-echo "Dockerfile: $DOCKERFILE"
-echo "Project entrypoint script: $PROJECT_ENTRYPONT"
 echo "Project name: $PROJECT_NAME"
 echo "Project port: $PROJECT_PORT"
 echo "Host ports: $HOST_PORTS"
 echo "Project file: $PROJECT_FILE"
 echo "Project directory: $PROJECT_DIR/"
+echo
+echo "Dockerfile: $DOCKERFILE"
+echo "Project entrypoint script: $PROJECT_ENTRYPONT"
 echo
 
 echo ================================
