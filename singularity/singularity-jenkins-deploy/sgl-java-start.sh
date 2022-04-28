@@ -13,6 +13,10 @@
 # -e: Exit when error occurred
 set -e
 
+declare -A PROJECT_OPTION_MAP=(
+    ["app"]="-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=US"
+)
+
 # Directory of this script
 BASE_DIR="$(dirname "$0")"
 # Project name, or image name
