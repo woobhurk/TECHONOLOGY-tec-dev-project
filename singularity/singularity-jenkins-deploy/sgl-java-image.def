@@ -3,8 +3,8 @@ From: openjdk:8
 
 %files
 # Copy files in the project directory to /opt/
-{{PROJECT_DIR}}/*.jar /opt/
-{{PROJECT_DIR}}/*.sh /opt/
+<PROJECT_DIR>/*.jar /opt/
+<PROJECT_DIR>/*.sh /opt/
 
 %post
 # Initialize container
@@ -13,14 +13,14 @@ ln -sf "/usr/share/zoneinfo/$TIMEZONE" "/etc/localtime"
 echo "$TIMEZONE" > "/etc/timezone"
 
 # Move all files in /opt/ to /project/
-PROJECT_FILE="{{PROJECT_FILE}}"
+PROJECT_FILE="<PROJECT_FILE>"
 PROJECT_DIR="/project"
 mkdir -p "$PROJECT_DIR/"
 mv -f "/opt"/* "$PROJECT_DIR/"
 mv "$PROJECT_DIR/$PROJECT_FILE" "$PROJECT_DIR/app.jar"
 
 %runscript
-/bin/bash "/project/sgl-java-entrypoint.sh" "{{PROJECT_OPTION}}" "{{PROJECT_LOG_FILE}}"
+/bin/bash "/project/sgl-java-entrypoint.sh" "<PROJECT_OPTION>" "<PROJECT_LOG_FILE>"
 
 %startscript
-/bin/bash "/project/sgl-java-entrypoint.sh" "{{PROJECT_OPTION}}" "{{PROJECT_LOG_FILE}}"
+/bin/bash "/project/sgl-java-entrypoint.sh" "<PROJECT_OPTION>" "<PROJECT_LOG_FILE>"

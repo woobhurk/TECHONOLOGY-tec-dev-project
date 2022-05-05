@@ -68,10 +68,10 @@ cp -f "$PROJECT_ENTRYPOINT" "$PROJECT_DIR/"
 cp -f "$SGL_DEF_FILE" "$TMP_DEF_FILE"
 # Replace variables in def file
 SGL_PROJECT_FILE="$(basename "$PROJECT_FILE")"
-sed -i -E -e "s|\{\{PROJECT_OPTION\}\}|$PROJECT_OPTION|g" \
-    -e "s|\{\{PROJECT_FILE\}\}|$SGL_PROJECT_FILE|g" \
-    -e "s|\{\{PROJECT_DIR\}\}|$PROJECT_DIR|g" \
-    -e "s|\{\{PROJECT_LOG_FILE\}\}|$PROJECT_LOG_FILE|g" \
+sed -i -E -e "s|<PROJECT_OPTION>|$PROJECT_OPTION|g" \
+    -e "s|<PROJECT_FILE>|$SGL_PROJECT_FILE|g" \
+    -e "s|<PROJECT_DIR>|$PROJECT_DIR|g" \
+    -e "s|<PROJECT_LOG_FILE>|$PROJECT_LOG_FILE|g" \
     "$TMP_DEF_FILE"
 echo
 
