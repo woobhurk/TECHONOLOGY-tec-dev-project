@@ -8,6 +8,7 @@ From: openjdk:8
 
 %post
 # Initialize container
+ln -sf "/bin/bash" "/bin/sh"
 TIMEZONE="Asia/Shanghai"
 ln -sf "/usr/share/zoneinfo/$TIMEZONE" "/etc/localtime"
 echo "$TIMEZONE" > "/etc/timezone"
@@ -20,7 +21,9 @@ mv -f "/opt"/* "$PROJECT_DIR/"
 mv "$PROJECT_DIR/$PROJECT_FILE" "$PROJECT_DIR/app.jar"
 
 %runscript
-/bin/bash "/project/sgl-java-entrypoint.sh" "<PROJECT_OPTION>" "<PROJECT_LOG_FILE>"
+# Source the script instead of using `bash` to avoid creating new process
+. "/project/sgl-java-entrypoint.sh" "<PROJECT_OPTION>" "<PROJECT_LOG_FILE>"
 
 %startscript
-/bin/bash "/project/sgl-java-entrypoint.sh" "<PROJECT_OPTION>" "<PROJECT_LOG_FILE>"
+# Source the script instead of using `bash` to avoid creating new process
+. "/project/sgl-java-entrypoint.sh" "<PROJECT_OPTION>" "<PROJECT_LOG_FILE>"
