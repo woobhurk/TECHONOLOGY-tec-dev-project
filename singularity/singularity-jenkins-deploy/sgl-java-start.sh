@@ -33,7 +33,7 @@ PROJECT_DIR="$(dirname "$PROJECT_FILE")"
 # Path of Singularity def file
 SGL_DEF_FILE="$BASE_DIR/sgl-java-image.def"
 # Path of temporary Singularity def file
-TMP_DEF_FILE="$SGL_DEF_FILE-$RANDOM.def"
+TMP_DEF_FILE="$(mktemp)"
 # Path of Singularity sif file
 SGL_SIF_FILE="$PROJECT_DIR/$PROJECT_NAME.sif"
 # Path of project entrypoint script
