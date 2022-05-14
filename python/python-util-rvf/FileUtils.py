@@ -19,7 +19,7 @@ class FileUtils(object):
     #     return FileUtils.inputPath(prompt, argv, FileUtils.DIR)
 
     @staticmethod
-    def inputPath(prompt: str="", argv: str="", type: int=None) -> str:
+    def inputPath(prompt: str="", argv: str="", type: int=0) -> str:
         """- 获取用户输入的路径。
         - 首先根据 type 校验 argv 的合法性，如果不合法则提示用户输入路径。
 
@@ -42,7 +42,7 @@ class FileUtils(object):
         return finalPath
 
     @staticmethod
-    def listAllPaths(path: str, type: int=None, extList: List[str]=[]) -> List[str]:
+    def listAllPaths(path: str, type: int=0, extList: List[str]=[]) -> List[str]:
         """- 列出路径下所有的路径，使用 type 和 ext 进行过滤。
 
         - param
@@ -70,7 +70,7 @@ class FileUtils(object):
         return finalPathList
 
     @staticmethod
-    def isPathValid(path: str, type: int=None) -> bool:
+    def isPathValid(path: str, type: int=0) -> bool:
         """- 根据类型判断路径是否合法。
 
         - param
