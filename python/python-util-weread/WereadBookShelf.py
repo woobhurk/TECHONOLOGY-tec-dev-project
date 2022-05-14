@@ -20,7 +20,7 @@ class WereadBookShelf():
 #"""
     BOOK_INFO: str = "    - 书名：%s\n" \
         + "        - 作者：%s\n" \
-        + "        - 封面：%s\n" \
+        + "        - 封面：![%s](%s)\n" \
         + "        - 进度：%s%%\n"
 
     def __init__(self) -> None:
@@ -107,7 +107,7 @@ class WereadBookShelf():
             author: str = bookInfo["author"]
             cover: str = bookInfo["cover"]
             progress: str = bookInfo["progress"]
-            content: str = self.BOOK_INFO % (title, author, cover, progress)
+            content: str = self.BOOK_INFO % (title, author, title, cover, progress)
             outputFile.write(content)
 
 if __name__ == "__main__":
