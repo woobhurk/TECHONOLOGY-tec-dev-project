@@ -4,10 +4,10 @@
 import json
 import logging
 import os
+import re
 import sys
 import time
 from typing import *
-
 
 """
 - 使用方式：
@@ -26,7 +26,7 @@ from typing import *
 class WereadBookShelf():
     OUTPUT_FILE_PATH: str = "%s/微信读书书架-%s.md"
     BOOK_GROUP_INFO: str = "- **%s**\n"
-    BOOK_INFO: str = "    - 书名：{title}\n" \
+    BOOK_INFO: str = "    - **《{title}》**\n" \
         + "        - 作者：{author}\n" \
         + "        - 封面：![{title}]({cover})\n" \
         + "        - 分类：{category}\n" \
@@ -135,7 +135,7 @@ class WereadBookShelf():
                 "category": bookInfo["categories"][0]["title"] \
                     if "categories" in bookInfo and len(bookInfo["categories"]) > 0 \
                     else "",
-                "publishTime": bookInfo["publishTime"],
+                "publishTime": re.sub(" .*", "", bookInfo["publishTime"]),
             }
             content: str = self.BOOK_INFO.format(**contentMap)
             outputFile.write(content)
