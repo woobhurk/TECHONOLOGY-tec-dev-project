@@ -48,3 +48,35 @@ function addMetadata() {
 }
 
 main "$@"
+
+
+
+#while read -r FILE; do
+#    FILENAME="$(basename "$FILE")"
+#    TITLE="${FILENAME%.*}"
+#    CATEGORY1="$(echo "$TITLE" | awk '{split($0, arr, "-"); print arr[1]}')"
+#    CATEGORY2="$(echo "$TITLE" | awk '{split($0, arr, "-"); print arr[2]}')"
+#    echo "$TITLE: $CATEGORY1  $CATEGORY2"
+#    sed -Ei_ -e "s/(- book)/\1\n    - $CATEGORY1\n    - $CATEGORY2/" "$FILE"
+#done < <(find ./ -iname "*-*-*.md" -type f)
+
+
+
+#while read -r FILE; do
+#    FILENAME="$(basename "$FILE")"
+#    TITLE="${FILENAME%.*}"
+#    CATEGORY="$(echo "$TITLE" | awk '{split($0, arr, "-"); print arr[1]}')"
+#    NEW_TITLE="$(echo "$TITLE" | awk '{split($0, arr, "-"); print arr[2]}')"
+#    echo "$TITLE: $CATEGORY $NEW_TITLE"
+#    sed -Ei_ -e "s/(- video)/\1\n    - $CATEGORY/" "$FILE"
+#    mv "$FILE" "$(dirname "$FILE")/$NEW_TITLE.md"
+#done < <(find ./ -iname "*-*.md" -type f)
+
+
+
+#while read -r FILE; do
+#    FILENAME="$(basename "$FILE")"
+#    TITLE="${FILENAME%.*}"
+#    echo "$FILENAME: $TITLE"
+#    sed -Ei_ -e "s/title: .*/title: $TITLE/g" "$FILE"
+#done < <(find ./ -iname "*.md" -type f)
