@@ -11,9 +11,14 @@ from typing import *
 
 """
 - 使用方式：
-    - 登录网页端微信读书，打开控制台，执行代码：
-        - `fetch('https://i.weread.qq.com/shelf/friendCommon?userVid=15962203', {method: 'GET', credentials: "include"}).then(o => o.text()).then(o => console.warn(o))`
-    - 复制输出的文本为 book-info.json 文件（里面包含书籍的信息）
+    - 登录网页端微信读书，打开控制台，执行代码（`userVid` 从 cookie 的 `wr_vid` 获取）：
+
+        ```js
+        // 如果显示跨域则刷新页面重试
+        fetch('https://i.weread.qq.com/shelf/friendCommon?userVid=15962203', {method: 'GET', credentials: "include"}).then(o => o.text()).then(o => console.warn(o))
+        ```
+
+        - 复制输出的文本为 book-info.json 文件（里面包含书籍的信息）
     - 点击“我的书架”，在控制台将 `/web/shelf` 请求返回的数据保存为 html
     - 打开 html 文件，搜索 `__INITIAL_STATE__`，复制这个变量值，保存为 book-group.json 文件（里面包含书籍所在分组）
     - 运行本脚本，依次将 book-group.json book-info.json 路径作为参数传入
@@ -27,8 +32,8 @@ class WereadBookShelf():
     OUTPUT_FILE_PATH: str = "%s/微信读书书架-%s.md"
     BOOK_GROUP_INFO: str = "- **%s**\n"
     BOOK_INFO: str = "    - **《{title}》**\n" \
-        + "        - 作者：{author}\n" \
         + "        - 封面：![{title}]({cover})\n" \
+        + "        - 作者：{author}\n" \
         + "        - 分类：{category}\n" \
         + "        - 出版日期：{publishTime}\n"
 
