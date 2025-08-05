@@ -15,15 +15,18 @@ from typing import *
 
         ```js
         // 如果显示跨域则刷新页面重试
-        fetch('https://i.weread.qq.com/shelf/friendCommon?userVid=15962203', {method: 'GET', credentials: "include"}).then(o => o.text()).then(o => console.warn(o))
+        fetch('https://weread.qq.com/web/shelf/sync?userVid=15962203', {method: 'GET', credentials: "include"}).then(o => o.text()).then(o => console.warn(o))
         ```
 
-        - 复制输出的文本为 book-info.json 文件（里面包含书籍的信息）
-    - 点击“我的书架”，在控制台将 `/web/shelf` 请求返回的数据保存为 html
-    - 打开 html 文件，搜索 `__INITIAL_STATE__`，复制这个变量值，保存为 book-group.json 文件（里面包含书籍所在分组）
-    - 运行本脚本，依次将 book-group.json book-info.json 路径作为参数传入
+        - 复制输出的文本为 book-info.json 文件（里面包含书籍和分组的信息）
+    - 运行本脚本，将 book-info.json 路径作为参数传入
 
 - 更新日志：
+    - 2025-08-05
+        - 微信读书 API 更新，原来的 `/shelf/friendCommon` 已经失效，无法获取书籍信息。现在换成 `/web/shelf/sync` 接口获取书籍信息，里面包含了完整的书籍和分组信息。
+        - 参考：
+            - https://chenge.ink/article/post20250505
+            - https://www.npmjs.com/package/mcp-server-weread?activeTab=code
     - 2024-02-06
         - 由于微信更新， `/web/shelf` 返回的信息中不再包含书籍信息，仅包含分组，因此需要配合 `/shelf/friendCommon` 接口返回的书籍信息来匹配
         - 参考：https://www.cnblogs.com/cloudbird/p/12683546.html
@@ -43,16 +46,12 @@ class WereadBookShelf():
     def main(self, argv: List[str]) -> None:
         logging.basicConfig(level=logging.INFO)
         try:
-            bookGroupFilePath: str = self.__getFilePath(argv[1] if len(argv) > 1 else "", \
-                "Book group json file path: ")
-            self.__checkFilePath(bookGroupFilePath)
             bookInfoFilePath: str = self.__getFilePath(argv[2] if len(argv) > 2 else "", \
                 "Book info json file path: ")
             self.__checkFilePath(bookInfoFilePath)
-            outputFilePath: str = self.__buildOutputFilePath(bookGroupFilePath)
-            bookGroupJsonObj: Dict[str, Any] = self.readJsonFile(bookGroupFilePath)
-            bookGroups: List[Dict[str, Any]] = self.buildBookGroups(bookGroupJsonObj)
+            outputFilePath: str = self.__buildOutputFilePath(bookInfoFilePath)
             bookInfoJsonObj: Dict[str, Any] = self.readJsonFile(bookInfoFilePath)
+            bookGroups: List[Dict[str, Any]] = self.buildBookGroups(bookInfoJsonObj)
             bookInfoMap: Dict[str, Any] = self.buildBookInfoMap(bookInfoJsonObj)
             self.writeBookAndShelfInfo(outputFilePath, bookGroups, bookInfoMap)
         except Exception as e:
@@ -66,20 +65,20 @@ class WereadBookShelf():
             jsonObj: Dict[str, Any] = json.load(f)
             return jsonObj
 
-    def buildBookGroups(self, bookGroupJsonObj: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def buildBookGroups(self, bookInfoJsonObj: Dict[str, Any]) -> List[Dict[str, Any]]:
         """构建书籍分组信息
         - 返回：[{name="分组名", bookIds=[书籍 id, ...]}, ...]
         """
-        bookGroupInfoList: List[Dict[str, Any]] = bookGroupJsonObj["shelf"]["booksAndArchives"]
+        bookGroups: List[Dict[str, Any]] = bookInfoJsonObj["archive"]
         # 没有 archiveId 属性的对象不是分组，要过滤掉
         return [{"name": i["name"], "bookIds": i["bookIds"]} \
-                for i in bookGroupInfoList if "archiveId" in i]
+                for i in bookGroups if "archiveId" in i]
 
     def buildBookInfoMap(self, bookInfoJsonObj: Dict[str, Any]) -> Dict[str, Any]:
         """构建书籍信息
         - 返回：{书籍 id: {书籍信息}}
         """
-        bookInfoList: List[Dict[str, Any]] = bookInfoJsonObj["recentBooks"]
+        bookInfoList: List[Dict[str, Any]] = bookInfoJsonObj["books"]
         # 没有 bookId 属性的对象不是书籍，要过滤掉
         return {i["bookId"]: i for i in bookInfoList if "bookId" in i}
 
