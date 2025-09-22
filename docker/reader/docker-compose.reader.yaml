@@ -1,0 +1,18 @@
+# https://github.com/hectorqin/reader
+services:
+  reader:
+    image: "hectorqin/reader:latest"
+    container_name: "reader"
+    restart: always
+    ports:
+      - "40201:8080"
+    environment:
+      - "TZ=Asia/Shanghai"
+      - "SPRING_PROFILES_ACTIVE=prod"
+      - "READER_APP_SECURE=true" # 开启登录鉴权，开启后将支持多用户模式
+      - "READER_APP_SECUREKEY=tyfanchz" # 管理员密码  建议修改
+      - "READER_APP_INVITECODE=tyfanchz" # 注册邀请码 建议修改,如不需要可注释或删除
+    volumes:
+      - "./data/storage/:/storage/"
+      - "./data/logs/:/logs/"
+    network_mode: "bridge"

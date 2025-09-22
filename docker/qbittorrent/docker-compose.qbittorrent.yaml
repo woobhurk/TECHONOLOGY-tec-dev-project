@@ -1,0 +1,16 @@
+# https://github.com/linuxserver/docker-qbittorrent
+services:
+  qbittorrent:
+    image: "linuxserver/qbittorrent:latest"
+    container_name: "qbittorrent"
+    restart: always
+    ports:
+      - "40301:8080"
+    environment:
+      - "TZ=Asia/Shanghai"
+      - "WEBUI_PORT=40301"
+      #- "TORRENTING_PORT=6881"
+    volumes:
+      - "./data/config/:/config/"
+      - "./data/downloads/:/downloads/"
+    network_mode: "bridge"

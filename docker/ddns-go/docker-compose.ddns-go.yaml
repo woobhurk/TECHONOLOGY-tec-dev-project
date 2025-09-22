@@ -1,14 +1,13 @@
-version: "3"
-
+# https://github.com/jeessy2/ddns-go
 services:
   ddns-go:
     image: "jeessy/ddns-go:latest"
     container_name: "ddns-go"
     restart: always
+    ports:
+      - "40101:9876"
     environment:
       - "TZ=Asia/Shanghai"
     volumes:
-      - "./ddns-go:/root"
-    ports:
-      - "9876:9876"
-    network_mode: "bridge"
+      - "./data/:/root/"
+    network_mode: "host"
