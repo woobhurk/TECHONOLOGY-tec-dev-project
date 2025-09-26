@@ -1,0 +1,15 @@
+# https://doc.oplist.org/guide/installation/docker
+services:
+  openlist:
+    image: "openlistteam/openlist:latest"
+    container_name: "openlist"
+    restart: always
+    ports:
+      - "40401:5244"
+    environment:
+      - "TZ=Asia/Shanghai"
+      - "UMASK=022"
+      - "OPENLIST_ADMIN_PASSWOR=tyfanchz"
+    volumes:
+      - "./data/:/opt/openlist/data/"
+    network_mode: "bridge"
