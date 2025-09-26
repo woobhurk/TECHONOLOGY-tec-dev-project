@@ -13,4 +13,5 @@ services:
       - "OPENLIST_ADMIN_PASSWOR=tyfanchz"
     volumes:
       - "./data/:/opt/openlist/data/"
+      - "/volume1/:/mnt/volume1/"
     network_mode: "bridge"
