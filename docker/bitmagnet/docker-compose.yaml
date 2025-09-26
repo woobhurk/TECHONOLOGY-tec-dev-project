@@ -15,7 +15,7 @@ services:
     environment:
       - "POSTGRES_HOST=bitmagnet-postgres" # 需要和 postgres 的服务名一致
       - "POSTGRES_PASSWORD=postgres"
-      # - TMDB_API_KEY=your_api_key
+      - "TMDB_API_KEY=your_api_key"
       # Enable logging to rotating files for ingest to Loki:
       - "LOG_FILE_ROTATOR_ENABLED=true"
     volumes:
