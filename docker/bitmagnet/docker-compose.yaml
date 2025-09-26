@@ -1,0 +1,55 @@
+# This is a full-featured example for running bitmagnet through a gluetun VPN connection with Grafana/Prometheus observability services.
+# See https://bitmagnet.io/setup/installation.html for a minimal docker-compose example.
+
+services:
+  bitmagnet:
+    image: "ghcr.io/bitmagnet-io/bitmagnet:latest"
+    container_name: "bitmagnet"
+    restart: always
+    ports:
+      # The bitmagnet ports must be exposed by the gluetun container:
+      - "40501:3333"
+      # BitTorrent ports:
+      - "40502:3334/tcp"
+      - "40502:3334/udp"
+    environment:
+      - "POSTGRES_HOST=bitmagnet-postgres" # 需要和 postgres 的服务名一致
+      - "POSTGRES_PASSWORD=postgres"
+      # - TMDB_API_KEY=your_api_key
+      # Enable logging to rotating files for ingest to Loki:
+      - "LOG_FILE_ROTATOR_ENABLED=true"
+    volumes:
+      - "./data/config/:/root/.config/bitmagnet/"
+      # Mount data folder (currently only used for logs when file rotation is enabled):
+      - "./data/bitmagnet/:/root/.local/share/bitmagnet/"
+    #network_mode: bridge
+    depends_on:
+      bitmagnet-postgres:
+        condition: service_healthy
+    command:
+      - "worker"
+      - "run"
+      - "--keys=http_server"
+      - "--keys=queue_server"
+      # disable the next line to run without DHT crawler
+      - "--keys=dht_crawler"
+
+  bitmagnet-postgres:
+    image: "postgres:16-alpine"
+    container_name: "bitmagnet-postgres"
+    restart: always
+    #ports:
+    #  - "40503:5432"
+    environment:
+      - "PGUSER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
+      - "POSTGRES_DB=bitmagnet"
+    volumes:
+      - "./data/postgres/:/var/lib/postgresql/data/"
+    shm_size: 1g
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - "pg_isready"
+      start_period: 20s
+      interval: 10s
